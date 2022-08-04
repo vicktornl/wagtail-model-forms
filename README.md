@@ -67,6 +67,7 @@ class FormSubmission(AbstractFormSubmission):
 class Form(AbstractForm):
     @cached_property
     def edit_url(self):
+        # return your url here, commonly your own modeladmin configuration
         url_helper = FormModelAdmin().url_helper
         return url_helper.get_action_url("edit", self.id)
 
