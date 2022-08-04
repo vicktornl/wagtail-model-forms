@@ -24,9 +24,6 @@ def get_submission_model():
     from django.apps import apps
 
     model_string = settings.SUBMISSION_MODEL
-
-    print("DOE DAN", model_string)
-
     try:
         return apps.get_model(model_string, require_ready=False)
     except ValueError:

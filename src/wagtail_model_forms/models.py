@@ -1,7 +1,15 @@
+import json
+
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from modelcluster.fields import ParentalKey
 from modelcluster.models import ClusterableModel
+from wagtail.admin.edit_handlers import (
+    FieldPanel,
+    InlinePanel,
+    ObjectList,
+    TabbedInterface,
+)
 from wagtail.contrib.forms.forms import FormBuilder
 from wagtail.contrib.forms.models import (
     AbstractFormField as WagtailAbstractFormField,
@@ -43,6 +51,17 @@ class AbstractForm(ClusterableModel):
 
     form_builder = FormBuilder
 
+    form_panels = [
+        FieldPanel("title", classname="full"),
+        InlinePanel("form_fields", label="Form fields"),
+    ]
+
+    edit_handler = TabbedInterface(
+        [
+            ObjectList(form_panels, heading=_("Form")),
+        ]
+    )
+
     class Meta:
         abstract = True
 
@@ -82,6 +101,5 @@ class AbstractForm(ClusterableModel):
         form_submission = self.get_submission_class().objects.create(
             form_data=form_data, form=self, page=page
         )
-        form_submission.sites.add(site)
         form_submission.save()
         return form_submission

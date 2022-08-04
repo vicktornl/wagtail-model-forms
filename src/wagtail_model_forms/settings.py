@@ -6,5 +6,5 @@ def get_setting(name: str, default=None):
 
 
 ADD_NEVER_CACHE_HEADERS = get_setting("ADD_NEVER_CACHE_HEADERS", default=True)
-FORM_MODEL = get_setting("SUBMISSION_MODEL", default="")
+FORM_MODEL = get_setting("FORM_MODEL", default="")
 SUBMISSION_MODEL = get_setting("SUBMISSION_MODEL", default="")
