@@ -27,3 +27,40 @@ INSTALLED_APPS = [
     "wagtail_model_forms",
 ]
 ```
+
+Create your models
+
+```
+from modelcluster.fields import ParentalKey
+from wagtail_model_forms.models import AbstractForm, AbstractFormField, AbstractFormSubmission
+
+
+class FormField(AbstractFormField):
+    model = ParentalKey(
+        "Form",
+        on_delete=models.CASCADE,
+        related_name="form_fields",
+    )
+
+
+class FormSubmission(AbstractFormSubmission):
+  pass
+
+
+class Form(AbstractForm):
+  pass
+```
+
+## Settings
+
+`WAGTAIL_MODEL_FORMS_ADD_NEVER_CACHE_HEADERS`
+
+Default `True`
+
+`WAGTAIL_MODEL_FORMS_FORM_MODEL`
+
+Default `wagtail_model_forms.models.Form`
+
+`WAGTAIL_MODEL_FORMS_SUBMISSION_MODEL`
+
+Default `wagtail_model_forms.models.FormSubmission`
