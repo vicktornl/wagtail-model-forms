@@ -5,6 +5,13 @@
 
 The Wagtail Form Builder functionalities available for your models/snippets.
 
+## Features
+
+* Well-known Form Builder functionalities
+* Form block for StreamField support
+* Extensible models (Form, FormSubmission & FormBlock)
+* Reports
+
 ## Requirements
 
 - Python 3
