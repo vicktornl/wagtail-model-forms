@@ -1,6 +1,7 @@
 import json
 
 from django.db import models
+from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 from modelcluster.fields import ParentalKey
 from modelcluster.models import ClusterableModel
@@ -67,6 +68,10 @@ class AbstractForm(ClusterableModel):
 
     def __str__(self):
         return self.title
+
+    @cached_property
+    def edit_url(self):
+        return None
 
     def get_form_fields(self):
         return self.form_fields.all()

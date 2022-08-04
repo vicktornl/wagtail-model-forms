@@ -34,5 +34,5 @@ class AbstractFormBlock(blocks.StructBlock):
 
 class FormBlock(AbstractFormBlock):
     class Meta:
-        icon = "fa-form"
+        icon = "form"
         template = "wagtail_model_forms/form.html"

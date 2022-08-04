@@ -31,6 +31,7 @@ INSTALLED_APPS = [
 Create your models
 
 ```python
+from django.utils.functional import cached_property
 from modelcluster.fields import ParentalKey
 from wagtail.core.models import Page
 from wagtail.snippets.models import register_snippet
@@ -57,7 +58,10 @@ class FormSubmission(AbstractFormSubmission):
 
 @register_snippet
 class Form(AbstractForm):
-    pass
+    @cached_property
+    def edit_url(self):
+        url_helper = FormModelAdmin().url_helper
+        return url_helper.get_action_url("edit", self.id)
 
 
 class MyPage(FormSnippetMixin, Page):
@@ -107,6 +111,10 @@ Must be of the form `app_label.model_name`
 ###### WAGTAIL_MODEL_FORMS_SUBMISSION_MODEL
 
 Must be of the form `app_label.model_name`
+
+###### WAGTAIL_MODEL_FORMS_REPORTS`
+
+Default `True`
 
 ## Templates
 
