@@ -116,7 +116,7 @@ Must be of the form `app_label.model_name`
 {% if not request.form_success is self.form.id %}
 <form action="" method="POST" novalidate>
     {% csrf_token %}
-    <input type="hidden" name="id" value="{{ self.form.id }}">
+    <input type="hidden" name="form_id" value="{{ self.form.id }}">
     {{ form.as_ul }}
     <button type="submit">Submit</button>
 </form>

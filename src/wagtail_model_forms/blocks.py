@@ -17,7 +17,7 @@ class AbstractFormBlock(blocks.StructBlock):
         user = request.user
         form_obj = context["self"]["form"]
 
-        if request.method == "POST" and "id" in request.POST:
+        if request.method == "POST" and "form_id" in request.POST:
             user = request.user
 
             form = form_obj.get_form(request.POST, request.FILES, page=page, user=user)

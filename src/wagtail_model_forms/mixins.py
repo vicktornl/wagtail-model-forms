@@ -21,10 +21,10 @@ class FormSnippetMixin:
 
     def serve(self, request, *args, **kwargs):
         if self.page_has_form:
-            if request.method == "POST" and "id" in request.POST:
+            if request.method == "POST" and "form_id" in request.POST:
                 Form = get_form_model()
 
-                snippet = get_object_or_404(Form, id=int(request.POST.get("id")))
+                snippet = get_object_or_404(Form, id=int(request.POST.get("form_id")))
 
                 form = snippet.get_form(
                     request.POST, request.FILES, page=self, user=request.user
