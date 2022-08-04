@@ -1,0 +1,11 @@
+exclude *
+recursive-exclude * *
+
+include MANIFEST.in
+include setup.py
+
+graft src/wagtail_model_forms
+
+global-exclude .DS_Store
+global-exclude *.pyc
+global-exclude __pycache__
