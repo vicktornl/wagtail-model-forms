@@ -1,6 +1,6 @@
 import json
-from decimal import Decimal
 
+from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
@@ -22,13 +22,6 @@ from wagtail.contrib.forms.models import (
 
 from wagtail_model_forms import get_submission_model
 from wagtail_model_forms.settings import FORM_MODEL
-
-
-class FormJSONEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, Decimal):
-            return str(obj)
-        return json.JSONEncoder.default(self, obj)
 
 
 class AbstractFormSubmission(WagtailAbstractFormSubmission):
@@ -109,7 +102,7 @@ class AbstractForm(ClusterableModel):
         return get_submission_model()
 
     def process_form_submission(self, form, page=None):
-        form_data = json.dumps(form.cleaned_data, cls=FormJSONEncoder)
+        form_data = json.dumps(form.cleaned_data, cls=DjangoJSONEncoder)
         site = page.get_site()
         form_submission = self.get_submission_class().objects.create(
             form_data=form_data, form=self, page=page
