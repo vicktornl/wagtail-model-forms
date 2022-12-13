@@ -23,6 +23,13 @@ from wagtail_model_forms import get_submission_model
 from wagtail_model_forms.settings import FORM_MODEL
 
 
+class FormJSONEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, Decimal):
+            return str(obj)
+        return json.JSONEncoder.default(self, obj)
+
+
 class AbstractFormSubmission(WagtailAbstractFormSubmission):
     page = models.ForeignKey(
         "wagtailcore.Page",
@@ -101,7 +108,7 @@ class AbstractForm(ClusterableModel):
         return get_submission_model()
 
     def process_form_submission(self, form, page=None):
-        form_data = json.dumps(form.cleaned_data)
+        form_data = json.dumps(form.cleaned_data, cls=FormJSONEncoder)
         site = page.get_site()
         form_submission = self.get_submission_class().objects.create(
             form_data=form_data, form=self, page=page
