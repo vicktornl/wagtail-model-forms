@@ -1,4 +1,5 @@
 import json
+from decimal import Decimal
 
 from django.db import models
 from django.utils.functional import cached_property
