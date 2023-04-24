@@ -41,5 +41,8 @@ class FormSubmissionReportView(ReportView):
 
     def get_queryset(self):
         return (
-            FormSubmission.objects.all().select_related("form").select_related("page")
+            FormSubmission.objects.all()
+            .select_related("form")
+            .select_related("page")
+            .order_by("-submit_time")
         )
