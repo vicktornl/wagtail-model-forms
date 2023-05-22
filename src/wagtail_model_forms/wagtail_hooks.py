@@ -1,15 +1,21 @@
 from django.urls import path, reverse
-from wagtail.admin.menu import AdminOnlyMenuItem
+from wagtail.admin.menu import MenuItem
 from wagtail.core import hooks
 
 from wagtail_model_forms.settings import REPORTS
 from wagtail_model_forms.views import FormSubmissionReportView
 
+
+class ReportsMenuItem(MenuItem):
+    def is_shown(self, request):
+        return REPORTS
+
+
 if REPORTS:
 
     @hooks.register("register_reports_menu_item")
     def register_report_menu_item():
-        return AdminOnlyMenuItem(
+        return ReportsMenuItem(
             FormSubmissionReportView.title,
             reverse("form_submissions_report"),
             classnames="icon icon-" + FormSubmissionReportView.header_icon,
