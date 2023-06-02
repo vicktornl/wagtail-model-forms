@@ -1,6 +1,6 @@
 from django.urls import path, reverse
+from wagtail import hooks
 from wagtail.admin.menu import MenuItem
-from wagtail.core import hooks
 
 from wagtail_model_forms.settings import REPORTS
 from wagtail_model_forms.views import FormSubmissionReportView
