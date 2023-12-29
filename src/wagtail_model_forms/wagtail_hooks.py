@@ -18,7 +18,7 @@ if REPORTS:
         return ReportsMenuItem(
             FormSubmissionReportView.title,
             reverse("form_submissions_report"),
-            classnames="icon icon-" + FormSubmissionReportView.header_icon,
+            classname="icon icon-" + FormSubmissionReportView.header_icon,
             order=700,
         )
 
