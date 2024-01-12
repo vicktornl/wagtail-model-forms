@@ -92,29 +92,27 @@ class FormBuilder(BaseFormBuilder):
             **options
         )
 
-    def create_file_field(self, field, options):
-        return forms.FileField(**options)
+    def create_dropdown_field(self, field, options):
+        options["choices"] = self.get_formatted_field_choices(field)
+        options["initial"] = self.get_formatted_field_initial(field)
+        return forms.ChoiceField(**options)
 
-    def handle_fieldset(self, structvalue, formfields):
-        fieldset = structvalue.value
-        fieldset_legend = fieldset["legend"]
-        fieldset_label = fieldset["label"]
-        for structvalue in fieldset["fields"]:
-            field_type = str(structvalue.block_type)
-            if field_type == "fieldrow":
-                self.handle_fieldrow_in_fieldset(
-                    structvalue, formfields, fieldset_label, fieldset_legend
-                )
-            else:
-                self.handle_fieldset_field(
-                    structvalue, formfields, fieldset_legend, fieldset_label
-                )
+    def create_multiselect_field(self, field, options):
+        options["choices"] = self.get_formatted_field_choices(field)
+        options["initial"] = self.get_formatted_field_initial(field)
+        return forms.MultipleChoiceField(**options)
 
-    def handle_fieldrow(self, structvalue, formfields):
-        fieldrow = structvalue.value
-        fieldrow_label = fieldrow["label"]
-        for structvalue in fieldrow["fields"]:
-            self.handle_fieldrow_field(structvalue, formfields, fieldrow_label)
+    def create_radio_field(self, field, options):
+        options["choices"] = self.get_formatted_field_choices(field)
+        options["initial"] = self.get_formatted_field_initial(field)
+        return forms.ChoiceField(widget=forms.RadioSelect, **options)
+
+    def create_checkboxes_field(self, field, options):
+        options["choices"] = self.get_formatted_field_choices(field)
+        options["initial"] = self.get_formatted_field_initial(field)
+        return forms.MultipleChoiceField(
+            widget=forms.CheckboxSelectMultiple, **options
+        )
 
     def handle_normal_field(self, structvalue, formfields):
         field = structvalue.value
@@ -123,35 +121,19 @@ class FormBuilder(BaseFormBuilder):
         clean_name = field["label"]
         formfields[clean_name] = create_field(field, options)
 
-    def handle_fieldset_field(
-        self, structvalue, formfields, fieldset_legend, fieldset_label
-    ):
-        field = structvalue.value
-        options = self.get_field_options(field)
-        create_field = self.get_create_field_function(str(structvalue.block_type))
-        clean_name = field["label"]
-        formfields[clean_name] = create_field(field, options)
-        formfields[clean_name].fieldset_legend = fieldset_legend
-        formfields[clean_name].fieldset_label = fieldset_label
+    def handle_fieldset(self, structvalue, formfields):
+        fieldset = structvalue.value
+        for structvalue in fieldset["fields"]:
+            field_type = str(structvalue.block_type)
+            if field_type == "fieldrow":
+                self.handle_fieldrow(structvalue, formfields)
+            else:
+                self.handle_normal_field(structvalue, formfields)
 
-    def handle_fieldrow_field(self, structvalue, formfields, fieldrow_label):
-        field = structvalue.value
-        options = self.get_field_options(field)
-        create_field = self.get_create_field_function(str(structvalue.block_type))
-        clean_name = field["label"]
-        formfields[clean_name] = create_field(field, options)
-        formfields[clean_name].fieldrow_label = fieldrow_label
-
-    def handle_fieldrow_in_fieldset(
-        self, structvalue, formfields, fieldset_label, fieldset_legend
-    ):
+    def handle_fieldrow(self, structvalue, formfields):
         fieldrow = structvalue.value
-        fieldrow_label = fieldrow["label"]
-        clean_name = fieldrow["label"]
         for structvalue in fieldrow["fields"]:
-            self.handle_fieldrow_field(structvalue, formfields, fieldrow_label)
-            formfields[clean_name].fieldset_legend = fieldset_legend
-            formfields[clean_name].fieldset_label = fieldset_label
+            self.handle_normal_field(structvalue, formfields)
 
     @property
     def formfields(self):
@@ -165,6 +147,7 @@ class FormBuilder(BaseFormBuilder):
                 self.handle_fieldrow(structvalue, formfields)
             else:
                 self.handle_normal_field(structvalue, formfields)
+
         return formfields
 
     def get_field_options(self, field):
@@ -196,9 +179,10 @@ class FormBuilder(BaseFormBuilder):
         Split the supplied default values into a list, separated by new lines.
         If no new lines in the provided default values, split by commas.
         """
-        if "default_value" in field:
-            values = [x.strip() for x in field["default_value"].split(",")]
-
+        values = []
+        for choice in field["choices"]:
+            if choice["default_value"] == True:
+                values.append(choice["value"])
         return values
 
 
@@ -234,8 +218,7 @@ class AbstractForm(ClusterableModel):
         return None
 
     def get_form_fields(self):
-        form_fields = self.fields
-        return form_fields
+        return self.fields
 
     def get_data_fields(self):
         data_fields = [

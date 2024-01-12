@@ -1,3 +1,4 @@
+from tabnanny import verbose
 from django.utils.translation import gettext_lazy as _
 from wagtail import blocks
 from wagtail.fields import StreamField
@@ -7,101 +8,104 @@ from wagtail_model_forms.settings import FORM_MODEL
 
 
 class AbstractFormFieldBlock(blocks.StructBlock):
-    label = blocks.CharBlock(label=_("label"))
-    help_text = blocks.CharBlock(required=False)
-    required = blocks.BooleanBlock(default=True, required=False)
+    label = blocks.CharBlock(label=_("Label"), help_text=_("The label of the form field."))
+    help_text = blocks.CharBlock(required=False, label=_("Help Text"), help_text=_("Optional help text for the form field. Will be displayed below the field."))
+    required = blocks.BooleanBlock(default=True, required=False, label=_("Required"), help_text=_("Check this box if the field is required to be filled in."))
 
     class Meta:
         abstract = True
 
-
 class ChoiceBlock(blocks.StructBlock):
-    value = blocks.CharBlock()
-
+    value = blocks.CharBlock(label=_("Choice"), help_text=_("Fill in the choice here."))
+    default_value = blocks.BooleanBlock(required=False, label=_("Checked by default"), help_text=_("Check this box if u want it to be checked by default."))
 
 class PlaceholderMixin(blocks.StructBlock):
-    placeholder = blocks.CharBlock(required=False)
-
+    placeholder = blocks.CharBlock(required=False, label=_("Placeholder"), help_text=_("Placeholder text for the field. will be shown when the field is empty(greyed out)."))
 
 class DefaultValueMixin(blocks.StructBlock):
     default_value = blocks.CharBlock(
         required=False,
-        help_text=_(
-            "Comma separated values, should be the value of a choice or the label of a field"
-        ),
+        label=_("Default Value"),
+        help_text=_("This value will be used as the default(prefilled) value for the field."),
     )
 
-
 class ChoicesMixin(blocks.StructBlock):
-    choices = blocks.ListBlock(ChoiceBlock())
+    choices = blocks.ListBlock(ChoiceBlock(), label=_("Choices"), help_text=_("Click here to add more choices for this field."))
 
-
-class SingleLineTextFieldBlock(
-    PlaceholderMixin, DefaultValueMixin, AbstractFormFieldBlock
-):
+class SingleLineTextFieldBlock(PlaceholderMixin, DefaultValueMixin, AbstractFormFieldBlock):
     class Meta:
         icon = "pilcrow"
+        label = _("Single Line Text Field")
+        help_text = _("A single line text input field.")
 
-
-class MultipleLineTextFieldBlock(
-    PlaceholderMixin, DefaultValueMixin, AbstractFormFieldBlock
-):
+class MultipleLineTextFieldBlock(PlaceholderMixin, DefaultValueMixin, AbstractFormFieldBlock):
     class Meta:
         icon = "pilcrow"
-
+        label = _("Multiple Line Text Field")
+        help_text = _("A multi-line text input field.")
 
 class EmailFieldBlock(PlaceholderMixin, DefaultValueMixin, AbstractFormFieldBlock):
     class Meta:
         icon = "mail"
-
+        label = _("Email Field")
+        help_text = _("An input field for email addresses.")
 
 class URLFieldBlock(PlaceholderMixin, DefaultValueMixin, AbstractFormFieldBlock):
     class Meta:
         icon = "site"
+        label = _("URL Field")
+        help_text = _("An input field for URLs.")
 
 
 class NumberFieldBlock(PlaceholderMixin, DefaultValueMixin, AbstractFormFieldBlock):
     class Meta:
         icon = "plus-inverse"
+        label = _("Number Field")
+        help_text = _("An input field for numeric values.")
 
 
 class DateFieldBlock(PlaceholderMixin, DefaultValueMixin, AbstractFormFieldBlock):
     class Meta:
         icon = "date"
+        label = _("Date Field")
+        help_text = _("An input field for dates.")
 
 
 class DateTimeFieldBlock(PlaceholderMixin, DefaultValueMixin, AbstractFormFieldBlock):
     class Meta:
         icon = "time"
+        label = _("Date / Time Field")
+        help_text = _("An input field for dates and times.")
 
 
-class DropdownFieldBlock(DefaultValueMixin, ChoicesMixin, AbstractFormFieldBlock):
+class DropdownFieldBlock(ChoicesMixin, AbstractFormFieldBlock):
     class Meta:
         icon = "arrow-down"
+        label = _("Dropdown Field")
+        help_text = _("A dropdown selection field.")
 
 
-class RadioFieldBlock(DefaultValueMixin, ChoicesMixin, AbstractFormFieldBlock):
+class RadioFieldBlock(ChoicesMixin, AbstractFormFieldBlock):
     class Meta:
         icon = "radio-full"
+        label = _("Radio Field")
+        help_text = _("A radio selection field.")
 
 
-class CheckboxFieldBlock(DefaultValueMixin, AbstractFormFieldBlock):
+class CheckboxFieldBlock(AbstractFormFieldBlock):
+    default_value = blocks.BooleanBlock(required=False)
     class Meta:
         icon = "tick-inverse"
+        label = _("Checkbox Field")
+        help_text = _("A checkbox selection field.")
 
 
-class CheckboxesFieldBlock(DefaultValueMixin, ChoicesMixin, AbstractFormFieldBlock):
-    default_value = blocks.CharBlock(
-        required=False, help_text=_("Comma separated values")
-    )
+class CheckboxesFieldBlock(ChoicesMixin, AbstractFormFieldBlock):
 
     class Meta:
         icon = "tick-inverse"
-
-
-class FileFieldBlock(AbstractFormFieldBlock):
-    class Meta:
-        icon = "doc-empty-inverse"
+        label = _("Checkboxes Field")
+        help_text = _("A checkbox selection field.")
 
 
 class HiddenFieldBlock(AbstractFormFieldBlock):
@@ -109,9 +113,11 @@ class HiddenFieldBlock(AbstractFormFieldBlock):
         icon = "form"
 
 
-class MultipleSelectFieldBlock(DefaultValueMixin, ChoicesMixin, AbstractFormFieldBlock):
+class MultipleSelectFieldBlock(ChoicesMixin, AbstractFormFieldBlock):
     class Meta:
         icon = "list-ul"
+        label = _("Multiple Select Field")
+        help_text = _("A multiple select field.")
 
 
 # Do not change the given names(strings) of the fieldblocks, these are used for method lookups.
@@ -133,7 +139,6 @@ CHOICE_FIELDBLOCKS = [
 ]
 
 UTILITY_FIELDBLOCKS = [
-    ("file", FileFieldBlock()),
     ("hidden", HiddenFieldBlock()),
     ("multiselect", MultipleSelectFieldBlock()),
 ]
@@ -142,11 +147,12 @@ COMMON_FIELDBLOCKS = TEXT_INPUT_FIELDBLOCKS + CHOICE_FIELDBLOCKS + UTILITY_FIELD
 
 
 class FieldRowBlock(blocks.StructBlock):
-    label = blocks.CharBlock(required=False)
-    fields = blocks.StreamBlock(
+    form_fields = blocks.StreamBlock(
         COMMON_FIELDBLOCKS,
         icon="form",
         use_json_field=True,
+        verbose_name=_("Form fields"),
+        help_text=_("Click to add more fields to your field row"),
     )
 
     class Meta:
@@ -154,12 +160,13 @@ class FieldRowBlock(blocks.StructBlock):
 
 
 class FieldSetBlock(blocks.StructBlock):
-    legend = blocks.CharBlock(required=False)
-    label = blocks.CharBlock(required=False)
-    fields = blocks.StreamBlock(
+    legend = blocks.CharBlock(label=_("Legend"), help_text=_("The legend of the fieldset. accessability purposes."))
+    form_fields = blocks.StreamBlock(
         COMMON_FIELDBLOCKS + [("fieldrow", FieldRowBlock())],
         icon="form",
         use_json_field=True,
+        verbose_name=_("Form fields"),
+        help_text=_("Click to add more fields to your field set"),
     )
 
     class Meta:
@@ -180,7 +187,6 @@ FIELDBLOCKS = StreamField(
         ("radio", RadioFieldBlock()),
         ("checkbox", CheckboxFieldBlock()),
         ("checkboxes", CheckboxesFieldBlock()),
-        ("file", FileFieldBlock()),
         ("hidden", HiddenFieldBlock()),
         ("multiselect", MultipleSelectFieldBlock()),
         ("fieldset", FieldSetBlock()),
@@ -188,7 +194,8 @@ FIELDBLOCKS = StreamField(
     ],
     blank=True,
     null=True,
-    verbose_name="Fields",
+    verbose_name=_("Form fields"),
+    help_text=_("Click to add more fields to your form"),
     use_json_field=True,
 )
 
