@@ -126,7 +126,7 @@ class NumberFieldBlock(AbstractFormFieldBlock):
         required=False,
         label=_("Placeholder"),
         help_text=_(
-            "Placeholder text for this field. will be shown when this field is empty(greyed out)."
+            "Placeholder text for this field, a greyed out text that will be shown when this field is empty."
         ),
     )
     class Meta:
@@ -147,7 +147,7 @@ class DateFieldBlock(AbstractFormFieldBlock):
         required=False,
         label=_("Placeholder"),
         help_text=_(
-            "Placeholder text for this field. will be shown when this field is empty(greyed out)."
+            "Placeholder text for this field, a greyed out text that will be shown when this field is empty."
         ),
     )
 
@@ -169,7 +169,7 @@ class DateTimeFieldBlock(AbstractFormFieldBlock):
         required=False,
         label=_("Placeholder"),
         help_text=_(
-            "Placeholder text for this field. will be shown when this field is empty(greyed out)."
+            "Placeholder text for this field, a greyed out text that will be shown when this field is empty."
         ),
     )
 
