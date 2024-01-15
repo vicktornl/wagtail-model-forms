@@ -22,7 +22,6 @@ def handle_form_request(request, page):
 
 
 class FormSnippetMixin:
-
     block_type = "form"
     streamfields = []
 
