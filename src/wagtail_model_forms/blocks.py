@@ -114,7 +114,21 @@ class URLFieldBlock(PlaceholderMixin, DefaultValueMixin, AbstractFormFieldBlock)
         help_text = _("An input field for URLs.")
 
 
-class NumberFieldBlock(PlaceholderMixin, DefaultValueMixin, AbstractFormFieldBlock):
+class NumberFieldBlock(AbstractFormFieldBlock):
+    default_value = blocks.IntegerBlock(
+        required=False,
+        label=_("Default Value"),
+        help_text=_(
+            "This value will be used as the default(prefilled) value for this field."
+        ),
+    )
+    placeholder = blocks.IntegerBlock(
+        required=False,
+        label=_("Placeholder"),
+        help_text=_(
+            "Placeholder text for this field. will be shown when this field is empty(greyed out)."
+        ),
+    )
     class Meta:
         icon = "plus-inverse"
         label = _("Number")
