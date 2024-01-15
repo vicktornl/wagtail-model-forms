@@ -51,9 +51,7 @@ class DateMixin(blocks.StructBlock):
     default_value = blocks.DateBlock(
         required=False,
         label=_("Default Value"),
-        help_text=_(
-            "This will be used to prefill this field."
-        ),
+        help_text=_("This will be used to prefill this field."),
     )
     placeholder = blocks.DateBlock(
         required=False,
@@ -68,9 +66,7 @@ class DefaultValueMixin(blocks.StructBlock):
     default_value = blocks.CharBlock(
         required=False,
         label=_("Default Value"),
-        help_text=_(
-            "This will be used to prefill this field."
-        ),
+        help_text=_("This will be used to prefill this field."),
     )
 
 
@@ -118,9 +114,7 @@ class NumberFieldBlock(AbstractFormFieldBlock):
     default_value = blocks.IntegerBlock(
         required=False,
         label=_("Default Value"),
-        help_text=_(
-            "This value will be used to prefill this field."
-        ),
+        help_text=_("This value will be used to prefill this field."),
     )
     placeholder = blocks.IntegerBlock(
         required=False,
@@ -129,6 +123,7 @@ class NumberFieldBlock(AbstractFormFieldBlock):
             "Placeholder text for this field, a greyed out text that will be shown when this field is empty."
         ),
     )
+
     class Meta:
         icon = "plus-inverse"
         label = _("Number")
@@ -139,9 +134,7 @@ class DateFieldBlock(AbstractFormFieldBlock):
     default_value = blocks.DateBlock(
         required=False,
         label=_("Default Value"),
-        help_text=_(
-            "This value will be used to prefill this field."
-        ),
+        help_text=_("This value will be used to prefill this field."),
     )
     placeholder = blocks.DateBlock(
         required=False,
@@ -161,9 +154,7 @@ class DateTimeFieldBlock(AbstractFormFieldBlock):
     default_value = blocks.DateTimeBlock(
         required=False,
         label=_("Default Value"),
-        help_text=_(
-            "This value will be used to prefill this field."
-        ),
+        help_text=_("This value will be used to prefill this field."),
     )
     placeholder = blocks.DateTimeBlock(
         required=False,
