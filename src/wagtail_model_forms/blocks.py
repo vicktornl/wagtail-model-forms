@@ -8,7 +8,7 @@ from wagtail_model_forms.settings import FORM_MODEL
 
 class AbstractFormFieldBlock(blocks.StructBlock):
     label = blocks.CharBlock(
-        label=_("Label"), help_text=_("The label for this form field.")
+        label=_("Label"),
     )
     help_text = blocks.CharBlock(
         required=False,
@@ -33,7 +33,7 @@ class ChoiceBlock(blocks.StructBlock):
     default_value = blocks.BooleanBlock(
         required=False,
         label=_("Checked by default"),
-        help_text=_("Check this box if u want this to be checked by default."),
+        help_text=_("Check this box if you want this to be checked by default."),
     )
 
 
@@ -52,7 +52,7 @@ class DateMixin(blocks.StructBlock):
         required=False,
         label=_("Default Value"),
         help_text=_(
-            "This will be used as the default(prefilled) value for this field."
+            "This will be used to prefill this field."
         ),
     )
     placeholder = blocks.DateBlock(
@@ -69,7 +69,7 @@ class DefaultValueMixin(blocks.StructBlock):
         required=False,
         label=_("Default Value"),
         help_text=_(
-            "This will be used as the default(prefilled) value for this field."
+            "This will be used to prefill this field."
         ),
     )
 
@@ -119,7 +119,7 @@ class NumberFieldBlock(AbstractFormFieldBlock):
         required=False,
         label=_("Default Value"),
         help_text=_(
-            "This value will be used as the default(prefilled) value for this field."
+            "This value will be used to prefill this field."
         ),
     )
     placeholder = blocks.IntegerBlock(
@@ -140,7 +140,7 @@ class DateFieldBlock(AbstractFormFieldBlock):
         required=False,
         label=_("Default Value"),
         help_text=_(
-            "This value will be used as the default(prefilled) value for this field."
+            "This value will be used to prefill this field."
         ),
     )
     placeholder = blocks.DateBlock(
@@ -162,7 +162,7 @@ class DateTimeFieldBlock(AbstractFormFieldBlock):
         required=False,
         label=_("Default Value"),
         help_text=_(
-            "This value will be used as the default(prefilled) value for this field."
+            "This value will be used to prefill this field."
         ),
     )
     placeholder = blocks.DateTimeBlock(
@@ -227,7 +227,6 @@ class MultipleSelectFieldBlock(ChoicesMixin, AbstractFormFieldBlock):
         help_text = _("A multiple select field.")
 
 
-# Do not change the given names(strings) of the fieldblocks, these are used for method lookups.
 TEXT_INPUT_FIELDBLOCKS = [
     ("singleline", SingleLineTextFieldBlock()),
     ("multiline", MultipleLineTextFieldBlock()),
@@ -285,7 +284,6 @@ class FieldSetBlock(blocks.StructBlock):
         icon = "list-ul"
 
 
-# Do not change the given names(strings) of the fieldblocks, these are used for method lookups.
 FIELDBLOCKS = StreamField(
     [
         ("fieldset", FieldSetBlock()),
