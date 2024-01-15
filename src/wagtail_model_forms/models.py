@@ -9,11 +9,7 @@ from django.utils.functional import cached_property
 from django.utils.html import conditional_escape
 from django.utils.translation import gettext_lazy as _
 from modelcluster.models import ClusterableModel
-from wagtail.admin.panels import (
-    FieldPanel,
-    ObjectList,
-    TabbedInterface,
-)
+from wagtail.admin.panels import FieldPanel, ObjectList, TabbedInterface
 from wagtail.contrib.forms.forms import FormBuilder as BaseFormBuilder
 from wagtail.contrib.forms.models import (
     AbstractFormField as WagtailAbstractFormField,
@@ -110,9 +106,7 @@ class FormBuilder(BaseFormBuilder):
     def create_checkboxes_field(self, field, options):
         options["choices"] = self.get_formatted_field_choices(field)
         options["initial"] = self.get_formatted_field_initial(field)
-        return forms.MultipleChoiceField(
-            widget=forms.CheckboxSelectMultiple, **options
-        )
+        return forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple, **options)
 
     def handle_normal_field(self, structvalue, formfields):
         field = structvalue.value
@@ -123,7 +117,7 @@ class FormBuilder(BaseFormBuilder):
 
     def handle_fieldset(self, structvalue, formfields):
         fieldset = structvalue.value
-        for structvalue in fieldset["fields"]:
+        for structvalue in fieldset["form_fields"]:
             field_type = str(structvalue.block_type)
             if field_type == "fieldrow":
                 self.handle_fieldrow(structvalue, formfields)
@@ -132,11 +126,14 @@ class FormBuilder(BaseFormBuilder):
 
     def handle_fieldrow(self, structvalue, formfields):
         fieldrow = structvalue.value
-        for structvalue in fieldrow["fields"]:
+        for structvalue in fieldrow["form_fields"]:
             self.handle_normal_field(structvalue, formfields)
 
     @property
     def formfields(self):
+        """
+        Returns an OrderedDict of form fields.
+        """
         formfields = OrderedDict()
 
         for structvalue in self.fields:
@@ -151,6 +148,9 @@ class FormBuilder(BaseFormBuilder):
         return formfields
 
     def get_field_options(self, field):
+        """
+        Returns a dictionary of options for the field.
+        """
         options = {"label": field["label"]}
         if getattr(settings, "WAGTAILFORMS_HELP_TEXT_ALLOW_HTML", False):
             options["help_text"] = field["help_text"]
@@ -164,10 +164,7 @@ class FormBuilder(BaseFormBuilder):
     def get_formatted_field_choices(self, field):
         """
         Returns a list of choices [(string, string),] for the field.
-        Split the provided choices into a list, separated by new lines.
-        If no new lines in the provided choices, split by commas.
         """
-
         choices = []
         for choice in field["choices"]:
             choices.append((choice["value"], choice["value"]))
@@ -176,8 +173,6 @@ class FormBuilder(BaseFormBuilder):
     def get_formatted_field_initial(self, field):
         """
         Returns a list of initial values [string,] for the field.
-        Split the supplied default values into a list, separated by new lines.
-        If no new lines in the provided default values, split by commas.
         """
         values = []
         for choice in field["choices"]:
