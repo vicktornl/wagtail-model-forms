@@ -10,6 +10,7 @@ from django.utils.html import conditional_escape
 from django.utils.translation import gettext_lazy as _
 from modelcluster.models import ClusterableModel
 from wagtail.admin.panels import FieldPanel, ObjectList, TabbedInterface
+from wagtail.contrib.forms.forms import BaseForm
 from wagtail.contrib.forms.forms import FormBuilder as BaseFormBuilder
 from wagtail.contrib.forms.models import (
     AbstractFormField as WagtailAbstractFormField,
@@ -180,6 +181,9 @@ class FormBuilder(BaseFormBuilder):
                 values.append(choice["value"])
         return values
 
+    def get_form_class(self):
+        return type("WagtailForm", (BaseForm,), self.formfields)
+
 
 class AbstractForm(ClusterableModel):
     title = models.CharField(
@@ -247,71 +251,3 @@ class AbstractForm(ClusterableModel):
         )
         form_submission.save()
         return form_submission
-
-
-# class AbstractForm(ClusterableModel):
-#     title = models.CharField(
-#         verbose_name=_("title"),
-#         max_length=255,
-#     )
-
-#     form_builder = FormBuilder
-
-#     fields = FIELDBLOCKS
-
-#     form_panels = [
-#         FieldPanel("title", classname="full"),
-#         FieldPanel("fields"),
-#     ]
-
-#     edit_handler = TabbedInterface(
-#         [
-#             ObjectList(form_panels, heading=_("Form")),
-#         ]
-#     )
-
-#     class Meta:
-#         abstract = True
-
-#     def __str__(self):
-#         return self.title
-
-#     @cached_property
-#     def edit_url(self):
-#         return None
-
-#     def get_form_fields(self):
-#         return self.fields
-
-#     def get_data_fields(self):
-#         data_fields = [
-#             ("submit_time", _("Submission date")),
-#         ]
-#         data_fields += [
-#             (field.clean_name, field.label) for field in self.get_form_fields()
-#         ]
-#         return data_fields
-
-#     def get_form_class(self):
-#         fb = self.form_builder(self.get_form_fields())
-#         return fb.get_form_class()
-
-#     def get_form_parameters(self):
-#         return {}
-
-#     def get_form(self, *args, **kwargs):
-#         form_class = self.get_form_class()
-#         form_params = self.get_form_parameters()
-#         return form_class(*args, **form_params)
-
-#     def get_submission_class(self):
-#         return get_submission_model()
-
-#     def process_form_submission(self, form, page=None):
-#         form_data = json.dumps(form.cleaned_data, cls=DjangoJSONEncoder)
-#         site = page.get_site()
-#         form_submission = self.get_submission_class().objects.create(
-#             form_data=form_data, form=self, page=page
-#         )
-#         form_submission.save()
-#         return form_submission
