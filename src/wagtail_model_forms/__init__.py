@@ -1,6 +1,7 @@
 from django.core.exceptions import ImproperlyConfigured
 
 from wagtail_model_forms import settings
+from wagtail_model_forms.contrib import *  # noqa
 
 
 def get_form_model():
