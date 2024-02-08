@@ -24,7 +24,7 @@ class CrispyFormLayoutMixin:
         layout = Layout(*layout_objects)
         return layout
 
-    def get_layout_objects_from_field(self, field):
+    def get_layout_objects_from_field(self, field, css_class=None):
         layout_objects = []
         block_type = field.block_type
         if block_type == "fieldset":
@@ -35,8 +35,10 @@ class CrispyFormLayoutMixin:
         elif block_type == "fieldrow":
             child_objects = []
             for child_field in field.value["form_fields"]:
-                child_objects += self.get_layout_objects_from_field(child_field)
+                child_objects += self.get_layout_objects_from_field(
+                    child_field, css_class="col"
+                )
             layout_objects.append(Row(*child_objects))
         else:
-            layout_objects.append(Field(field.value["label"]))
+            layout_objects.append(Div(Field(field.value["label"]), css_class=css_class))
         return layout_objects
