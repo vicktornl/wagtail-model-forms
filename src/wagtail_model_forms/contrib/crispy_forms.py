@@ -8,7 +8,6 @@ class CrispyFormLayoutMixin:
     def get_form(self, *args, **kwargs):
         form = super().get_form(*args, **kwargs)
         form.helper = self.get_form_helper()
-        print(form.helper)
         return form
 
     def get_form_helper(self):

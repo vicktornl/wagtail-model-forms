@@ -11,6 +11,7 @@ The Wagtail Form Builder functionalities available for your models/snippets.
 * Form block for StreamField support
 * Extensible models (Form, FormSubmission & FormBlock)
 * Reports
+* Crispy forms support
 
 ## Requirements
 
@@ -123,6 +124,10 @@ Must be of the form `app_label.model_name`
 ###### WAGTAIL_MODEL_FORMS_REPORTS`
 
 Default `True`
+
+###### WAGTAIL_MODEL_FORMS_CIRSPY_FORMS_FORM_TAG
+
+Default `False`
 
 ## Templates
 

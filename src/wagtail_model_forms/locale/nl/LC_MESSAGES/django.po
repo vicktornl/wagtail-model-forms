@@ -1,0 +1,163 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-02-09 09:17+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: src/wagtail_model_forms/blocks.py:11
+msgid "Label"
+msgstr ""
+
+#: src/wagtail_model_forms/blocks.py:15
+msgid "Help text"
+msgstr "Helptekst"
+
+#: src/wagtail_model_forms/blocks.py:20
+msgid "Required"
+msgstr "Verplicht"
+
+#: src/wagtail_model_forms/blocks.py:21
+msgid "Check this box if this field is required to be filled in"
+msgstr "Vink dit vakje aan als dit veld verplicht moet worden ingevuld."
+
+#: src/wagtail_model_forms/blocks.py:29
+msgid "Choice"
+msgstr "Keuze"
+
+#: src/wagtail_model_forms/blocks.py:32 src/wagtail_model_forms/blocks.py:157
+msgid "Checked by default"
+msgstr "Standaard aangevinkt"
+
+#: src/wagtail_model_forms/blocks.py:33
+msgid "Check this box if you want this to be checked by default"
+msgstr "Vink dit vakje aan als je wilt dat dit standaard wordt ingeschakeld."
+
+#: src/wagtail_model_forms/blocks.py:40 src/wagtail_model_forms/blocks.py:51
+#: src/wagtail_model_forms/blocks.py:104 src/wagtail_model_forms/blocks.py:119
+#: src/wagtail_model_forms/blocks.py:134
+msgid "Placeholder"
+msgstr ""
+
+#: src/wagtail_model_forms/blocks.py:47 src/wagtail_model_forms/blocks.py:58
+#: src/wagtail_model_forms/blocks.py:100 src/wagtail_model_forms/blocks.py:115
+#: src/wagtail_model_forms/blocks.py:130
+msgid "Default value"
+msgstr "Standaard waarde"
+
+#: src/wagtail_model_forms/blocks.py:65
+msgid "Choices"
+msgstr "Keuzes"
+
+#: src/wagtail_model_forms/blocks.py:74
+msgid "Singleline text"
+msgstr "Enkele tekstregel"
+
+#: src/wagtail_model_forms/blocks.py:82
+msgid "Multiline text"
+msgstr "Meerdere tekstregels"
+
+#: src/wagtail_model_forms/blocks.py:88
+msgid "Email"
+msgstr "Email"
+
+#: src/wagtail_model_forms/blocks.py:94
+msgid "URL"
+msgstr ""
+
+#: src/wagtail_model_forms/blocks.py:109
+msgid "Number"
+msgstr "Nummer"
+
+#: src/wagtail_model_forms/blocks.py:124
+msgid "Date"
+msgstr "Datum"
+
+#: src/wagtail_model_forms/blocks.py:139
+msgid "Date and time"
+msgstr "Datum en tijd"
+
+#: src/wagtail_model_forms/blocks.py:145
+msgid "Dropdown"
+msgstr ""
+
+#: src/wagtail_model_forms/blocks.py:151
+msgid "Radio group"
+msgstr ""
+
+#: src/wagtail_model_forms/blocks.py:162
+msgid "Checkbox"
+msgstr ""
+
+#: src/wagtail_model_forms/blocks.py:168
+msgid "Checkboxes"
+msgstr "Checkboxen"
+
+#: src/wagtail_model_forms/blocks.py:179
+msgid "Multiselect"
+msgstr "Multiselect"
+
+#: src/wagtail_model_forms/blocks.py:212 src/wagtail_model_forms/blocks.py:227
+#: src/wagtail_model_forms/blocks.py:254
+msgid "Form fields"
+msgstr "Formuliervelden"
+
+#: src/wagtail_model_forms/blocks.py:221
+msgid "Legend"
+msgstr "Legende"
+
+#: src/wagtail_model_forms/models.py:31
+#: src/wagtail_model_forms/templates/wagtail_model_forms/form_submissions_report.html:14
+#: src/wagtail_model_forms/views.py:27
+msgid "Page"
+msgstr "Pagina"
+
+#: src/wagtail_model_forms/models.py:186
+msgid "title"
+msgstr "titel"
+
+#: src/wagtail_model_forms/models.py:201
+#: src/wagtail_model_forms/templates/wagtail_model_forms/form_submissions_report.html:11
+#: src/wagtail_model_forms/views.py:26
+msgid "Form"
+msgstr "Formulier"
+
+#: src/wagtail_model_forms/models.py:220
+msgid "Submission date"
+msgstr "Datum indiening"
+
+#: src/wagtail_model_forms/templates/wagtail_model_forms/form_submissions_report.html:17
+#: src/wagtail_model_forms/views.py:13 src/wagtail_model_forms/views.py:28
+msgid "Date / Time"
+msgstr "Datum / tijd"
+
+#: src/wagtail_model_forms/templates/wagtail_model_forms/form_submissions_report.html:20
+#: src/wagtail_model_forms/views.py:29
+msgid "Data"
+msgstr "Data"
+
+#: src/wagtail_model_forms/templates/wagtail_model_forms/form_submissions_report.html:29
+msgid "Edit this form"
+msgstr "Wijzig dit formulier"
+
+#: src/wagtail_model_forms/templates/wagtail_model_forms/form_submissions_report.html:44
+#: src/wagtail_model_forms/templates/wagtail_model_forms/form_submissions_report.html:49
+msgid "No form submissions found."
+msgstr "Geen formulierinzendingen gevonden."
+
+#: src/wagtail_model_forms/views.py:23
+msgid "Form submissions"
+msgstr "Formulierinzendingen"

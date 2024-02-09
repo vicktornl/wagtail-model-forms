@@ -12,16 +12,13 @@ class AbstractFormFieldBlock(blocks.StructBlock):
     )
     help_text = blocks.CharBlock(
         required=False,
-        label=_("Help Text"),
-        help_text=_(
-            "Optional help text for this form field, which will be displayed below it."
-        ),
+        label=_("Help text"),
     )
     required = blocks.BooleanBlock(
         default=True,
         required=False,
         label=_("Required"),
-        help_text=_("Check this box if this field is required to be filled in."),
+        help_text=_("Check this box if this field is required to be filled in"),
     )
 
     class Meta:
@@ -29,11 +26,11 @@ class AbstractFormFieldBlock(blocks.StructBlock):
 
 
 class ChoiceBlock(blocks.StructBlock):
-    value = blocks.CharBlock(label=_("Choice"), help_text=_("Fill in a choice here."))
+    value = blocks.CharBlock(label=_("Choice"))
     default_value = blocks.BooleanBlock(
         required=False,
         label=_("Checked by default"),
-        help_text=_("Check this box if you want this to be checked by default."),
+        help_text=_("Check this box if you want this to be checked by default"),
     )
 
 
@@ -41,32 +38,24 @@ class PlaceholderMixin(blocks.StructBlock):
     placeholder = blocks.CharBlock(
         required=False,
         label=_("Placeholder"),
-        help_text=_(
-            "Placeholder text for this field, a greyed out text that will be shown when this field is empty."
-        ),
     )
 
 
 class DateMixin(blocks.StructBlock):
     default_value = blocks.DateBlock(
         required=False,
-        label=_("Default Value"),
-        help_text=_("This will be used to prefill this field."),
+        label=_("Default value"),
     )
     placeholder = blocks.DateBlock(
         required=False,
         label=_("Placeholder"),
-        help_text=_(
-            "Placeholder text for this field, a greyed out text that will be shown when this field is empty."
-        ),
     )
 
 
 class DefaultValueMixin(blocks.StructBlock):
     default_value = blocks.CharBlock(
         required=False,
-        label=_("Default Value"),
-        help_text=_("This will be used to prefill this field."),
+        label=_("Default value"),
     )
 
 
@@ -74,7 +63,6 @@ class ChoicesMixin(blocks.StructBlock):
     choices = blocks.ListBlock(
         ChoiceBlock(),
         label=_("Choices"),
-        help_text=_("Click here to add more choices for this field."),
     )
 
 
@@ -84,7 +72,6 @@ class SingleLineTextFieldBlock(
     class Meta:
         icon = "pilcrow"
         label = _("Singleline text")
-        help_text = _("A single line text input field.")
 
 
 class MultipleLineTextFieldBlock(
@@ -93,117 +80,92 @@ class MultipleLineTextFieldBlock(
     class Meta:
         icon = "pilcrow"
         label = _("Multiline text")
-        help_text = _("A multi-line text input field.")
 
 
 class EmailFieldBlock(PlaceholderMixin, DefaultValueMixin, AbstractFormFieldBlock):
     class Meta:
         icon = "mail"
         label = _("Email")
-        help_text = _("An input field for email addresses.")
 
 
 class URLFieldBlock(PlaceholderMixin, DefaultValueMixin, AbstractFormFieldBlock):
     class Meta:
         icon = "site"
         label = _("URL")
-        help_text = _("An input field for URLs.")
 
 
 class NumberFieldBlock(AbstractFormFieldBlock):
     default_value = blocks.IntegerBlock(
         required=False,
-        label=_("Default Value"),
-        help_text=_("This value will be used to prefill this field."),
+        label=_("Default value"),
     )
     placeholder = blocks.IntegerBlock(
         required=False,
         label=_("Placeholder"),
-        help_text=_(
-            "Placeholder text for this field, a greyed out text that will be shown when this field is empty."
-        ),
     )
 
     class Meta:
         icon = "plus-inverse"
         label = _("Number")
-        help_text = _("An input field for numeric values.")
 
 
 class DateFieldBlock(AbstractFormFieldBlock):
     default_value = blocks.DateBlock(
         required=False,
-        label=_("Default Value"),
-        help_text=_("This value will be used to prefill this field."),
+        label=_("Default value"),
     )
     placeholder = blocks.DateBlock(
         required=False,
         label=_("Placeholder"),
-        help_text=_(
-            "Placeholder text for this field, a greyed out text that will be shown when this field is empty."
-        ),
     )
 
     class Meta:
         icon = "date"
         label = _("Date")
-        help_text = _("An input field for dates.")
 
 
 class DateTimeFieldBlock(AbstractFormFieldBlock):
     default_value = blocks.DateTimeBlock(
         required=False,
-        label=_("Default Value"),
-        help_text=_("This value will be used to prefill this field."),
+        label=_("Default value"),
     )
     placeholder = blocks.DateTimeBlock(
         required=False,
         label=_("Placeholder"),
-        help_text=_(
-            "Placeholder text for this field, a greyed out text that will be shown when this field is empty."
-        ),
     )
 
     class Meta:
         icon = "time"
-        label = _("Date / Time")
-        help_text = _("An input field for dates and times.")
+        label = _("Date and time")
 
 
 class DropdownFieldBlock(ChoicesMixin, AbstractFormFieldBlock):
     class Meta:
         icon = "arrow-down"
         label = _("Dropdown")
-        help_text = _("A dropdown selection field.")
 
 
 class RadioFieldBlock(ChoicesMixin, AbstractFormFieldBlock):
     class Meta:
         icon = "radio-full"
-        label = _("Radio")
-        help_text = _("A radio selection field.")
+        label = _("Radio group")
 
 
 class CheckboxFieldBlock(AbstractFormFieldBlock):
     default_value = blocks.BooleanBlock(
         required=False,
         label=_("Checked by default"),
-        help_text=_(
-            "Check this box if u want this checkbox the be checked by default."
-        ),
     )
 
     class Meta:
         icon = "tick-inverse"
         label = _("Checkbox")
-        help_text = _("A checkbox field.")
 
 
 class CheckboxesFieldBlock(ChoicesMixin, AbstractFormFieldBlock):
     class Meta:
         icon = "tick-inverse"
         label = _("Checkboxes")
-        help_text = _("A field with multiple checkboxes.")
 
 
 class HiddenFieldBlock(AbstractFormFieldBlock):
@@ -214,8 +176,7 @@ class HiddenFieldBlock(AbstractFormFieldBlock):
 class MultipleSelectFieldBlock(ChoicesMixin, AbstractFormFieldBlock):
     class Meta:
         icon = "list-ul"
-        label = _("Multiple Select")
-        help_text = _("A multiple select field.")
+        label = _("Multiselect")
 
 
 TEXT_INPUT_FIELDBLOCKS = [
@@ -249,7 +210,6 @@ class FieldRowBlock(blocks.StructBlock):
         icon="form",
         use_json_field=True,
         verbose_name=_("Form fields"),
-        help_text=_("Click to add more fields to your field row"),
     )
 
     class Meta:
@@ -259,16 +219,12 @@ class FieldRowBlock(blocks.StructBlock):
 class FieldSetBlock(blocks.StructBlock):
     legend = blocks.CharBlock(
         label=_("Legend"),
-        help_text=_(
-            "The legend of the fieldset, displayed as a heading above the fieldset."
-        ),
     )
     form_fields = blocks.StreamBlock(
         [("fieldrow", FieldRowBlock())] + COMMON_FIELDBLOCKS,
         icon="form",
         use_json_field=True,
         verbose_name=_("Form fields"),
-        help_text=_("Click to add more fields to your field set"),
     )
 
     class Meta:
@@ -296,7 +252,6 @@ FIELDBLOCKS = StreamField(
     blank=True,
     null=True,
     verbose_name=_("Form fields"),
-    help_text=_("Click to add more fields to your form"),
     use_json_field=True,
 )
 
