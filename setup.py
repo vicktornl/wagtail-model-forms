@@ -14,7 +14,7 @@ tests_requires = [
 
 setup(
     name="wagtail-model-forms",
-    version="0.3.0",
+    version="0.4.0",
     description="",
     author="R. Moorman <rob@vicktor.nl>",
     install_requires=install_requires,
