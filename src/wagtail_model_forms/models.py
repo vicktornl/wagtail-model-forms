@@ -239,8 +239,12 @@ class AbstractForm(ClusterableModel):
     def get_submission_class(self):
         return get_submission_model()
 
+    def get_form_data(self, form):
+        form_data = form.cleaned_data
+        return form_data
+
     def process_form_submission(self, form, page=None):
-        form_data = json.dumps(form.cleaned_data, cls=DjangoJSONEncoder)
+        form_data = json.dumps(self.get_form_data(form), cls=DjangoJSONEncoder)
         site = page.get_site()
         form_submission = self.get_submission_class().objects.create(
             form_data=form_data, form=self, page=page
