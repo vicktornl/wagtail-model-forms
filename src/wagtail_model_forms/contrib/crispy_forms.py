@@ -30,7 +30,7 @@ class CrispyFormLayoutMixin:
             child_objects = []
             for child_field in field.value["form_fields"]:
                 child_objects += self.get_layout_objects_from_field(child_field)
-            layout_objects.append(Fieldset("Naam van fieldset", *child_objects))
+            layout_objects.append(Fieldset(field.value["legend"], *child_objects))
         elif block_type == "fieldrow":
             child_objects = []
             for child_field in field.value["form_fields"]:
