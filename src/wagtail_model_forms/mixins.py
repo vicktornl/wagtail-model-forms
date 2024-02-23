@@ -18,7 +18,7 @@ def handle_form_request(request, page):
 
         if form.is_valid():
             request.form_success = snippet.id
-            snippet.process_form_submission(form, page=page)
+            snippet.process_form_submission(form, page=page, request=request)
 
 
 class FormSnippetMixin:
