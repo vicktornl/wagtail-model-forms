@@ -31,7 +31,7 @@ def pytest_configure():
             "django.contrib.staticfiles",
             "wagtail_model_forms",
         ],
-        MIDDLEWARE_CLASSES=[
+        MIDDLEWARE=[
             "django.middleware.security.SecurityMiddleware",
             "django.contrib.sessions.middleware.SessionMiddleware",
             "django.middleware.common.CommonMiddleware",
@@ -42,4 +42,5 @@ def pytest_configure():
             "wagtail.middleware.SiteMiddleware",
         ],
         SECRET_KEY="tests",
+        STATIC_URL="/static/",
     )
