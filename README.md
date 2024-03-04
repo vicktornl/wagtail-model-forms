@@ -15,9 +15,9 @@ The Wagtail Form Builder functionalities available for your models/snippets.
 
 ## Requirements
 
-- Python 3
-- Django >= 2.2.8
-- Wagtail >= 2
+- Python >= 3.8
+- Django >= 4.2
+- Wagtail >= 5.2
 
 ## Installation
 
