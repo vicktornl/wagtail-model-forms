@@ -29,6 +29,7 @@ def get_field_clean_name(field_value, namespace=""):
     else:
         return slugify(field_value["label"])
 
+
 class AbstractFormSubmission(WagtailAbstractFormSubmission):
     page = models.ForeignKey(
         "wagtailcore.Page",
@@ -136,7 +137,6 @@ class FormBuilder(BaseFormBuilder):
         fieldrow = structvalue.value
         for structvalue in fieldrow["form_fields"]:
             self.handle_normal_field(structvalue, formfields, namespace=namespace)
-
 
     @property
     def formfields(self):
