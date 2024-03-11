@@ -7,6 +7,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models
 from django.utils.functional import cached_property
 from django.utils.html import conditional_escape
+from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 from modelcluster.models import ClusterableModel
 from wagtail.admin.panels import FieldPanel, ObjectList, TabbedInterface
@@ -21,6 +22,12 @@ from wagtail.contrib.forms.models import (
 from wagtail_model_forms import get_submission_model
 from wagtail_model_forms.blocks import FIELDBLOCKS
 
+
+def get_field_clean_name(field_value, namespace=""):
+    if namespace:
+        return "{}.{}".format(namespace, slugify(field_value["label"]))
+    else:
+        return slugify(field_value["label"])
 
 class AbstractFormSubmission(WagtailAbstractFormSubmission):
     page = models.ForeignKey(
@@ -108,26 +115,28 @@ class FormBuilder(BaseFormBuilder):
         options["initial"] = self.get_formatted_field_initial(field)
         return forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple, **options)
 
-    def handle_normal_field(self, structvalue, formfields):
+    def handle_normal_field(self, structvalue, formfields, namespace=""):
         field = structvalue.value
         options = self.get_field_options(field)
         create_field = self.get_create_field_function(str(structvalue.block_type))
-        clean_name = field["label"]
+        clean_name = get_field_clean_name(field, namespace)
+
         formfields[clean_name] = create_field(field, options)
 
-    def handle_fieldset(self, structvalue, formfields):
+    def handle_fieldset(self, structvalue, formfields, namespace=""):
         fieldset = structvalue.value
         for structvalue in fieldset["form_fields"]:
             field_type = str(structvalue.block_type)
             if field_type == "fieldrow":
-                self.handle_fieldrow(structvalue, formfields)
+                self.handle_fieldrow(structvalue, formfields, namespace=namespace)
             else:
-                self.handle_normal_field(structvalue, formfields)
+                self.handle_normal_field(structvalue, formfields, namespace=namespace)
 
-    def handle_fieldrow(self, structvalue, formfields):
+    def handle_fieldrow(self, structvalue, formfields, namespace=""):
         fieldrow = structvalue.value
         for structvalue in fieldrow["form_fields"]:
-            self.handle_normal_field(structvalue, formfields)
+            self.handle_normal_field(structvalue, formfields, namespace=namespace)
+
 
     @property
     def formfields(self):
@@ -139,12 +148,13 @@ class FormBuilder(BaseFormBuilder):
         for structvalue in self.fields:
             field_type = str(structvalue.block_type)
             if field_type == "fieldset":
-                self.handle_fieldset(structvalue, formfields)
+                namespace = slugify(structvalue.value["legend"])
+                self.handle_fieldset(structvalue, formfields, namespace)
             elif field_type == "fieldrow":
-                self.handle_fieldrow(structvalue, formfields)
+                namespace = slugify(structvalue.value["legend"])
+                self.handle_fieldrow(structvalue, formfields, namespace)
             else:
-                self.handle_normal_field(structvalue, formfields)
-
+                self.handle_normal_field(structvalue, formfields, namespace="")
         return formfields
 
     def get_field_options(self, field):
