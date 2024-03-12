@@ -151,8 +151,7 @@ class FormBuilder(BaseFormBuilder):
                 namespace = slugify(structvalue.value["legend"])
                 self.handle_fieldset(structvalue, formfields, namespace)
             elif field_type == "fieldrow":
-                namespace = slugify(structvalue.value["legend"])
-                self.handle_fieldrow(structvalue, formfields, namespace)
+                self.handle_fieldrow(structvalue, formfields)
             else:
                 self.handle_normal_field(structvalue, formfields, namespace="")
         return formfields
