@@ -2,8 +2,8 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Div, Field, Fieldset, Layout, Row
 from django.utils.text import slugify
 
-from wagtail_model_forms.settings import CIRSPY_FORMS_FORM_TAG
 from wagtail_model_forms.models import get_field_clean_name
+from wagtail_model_forms.settings import CIRSPY_FORMS_FORM_TAG
 
 
 class CrispyFormLayoutMixin:
@@ -33,7 +33,9 @@ class CrispyFormLayoutMixin:
             namespace = slugify(field.value["legend"])
             child_objects = []
             for child_field in field.value["form_fields"]:
-                child_objects += self.get_layout_objects_from_field(child_field, namespace=namespace)
+                child_objects += self.get_layout_objects_from_field(
+                    child_field, namespace=namespace
+                )
             layout_objects.append(Fieldset(field.value["legend"], *child_objects))
         elif block_type == "fieldrow":
             child_objects = []

@@ -10,8 +10,9 @@ class AbstractFormFieldBlock(blocks.StructBlock):
     label = blocks.CharBlock(
         label=_("Label"),
     )
-    help_text = blocks.CharBlock(
+    help_text = blocks.RichTextBlock(
         required=False,
+        features=["link", "document-link"],
         label=_("Help text"),
     )
     required = blocks.BooleanBlock(
