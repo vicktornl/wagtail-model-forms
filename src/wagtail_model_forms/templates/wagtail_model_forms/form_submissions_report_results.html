@@ -31,7 +31,11 @@
                         {% endif %}
                     </td>
                     <td>
-                        <a href="{% url 'wagtailadmin_explore' entry.page.id %}">{{ entry.page.title }}</a>
+                        {% if entry.page %}
+                            <a href="{% url 'wagtailadmin_explore' entry.page.id %}">{{ entry.page.title }}</a>
+                        {% else %}
+                            <i>{% trans "Deleted page" %}</i>
+                        {% endif %}
                     </td>
                     <td class="updated">{{ entry.submit_time }}</td>
                     <td>{{ entry.form_data|truncatechars:255 }}</td>
