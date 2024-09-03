@@ -1,0 +1,46 @@
+{% extends "wagtailadmin/reports/base_page_report_results.html" %}
+
+{% load i18n wagtailadmin_tags %}
+
+{% block results %}
+    <table class="listing">
+        <thead>
+            <tr>
+                <th class="title">
+                    {% trans "Form" %}
+                </th>
+                <th>
+                    {% trans "Page" %}
+                </th>
+                <th class="updated">
+                    {% trans "Date / Time" %}
+                </th>
+                <th>
+                    {% trans "Data" %}
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for entry in object_list %}
+                <tr>
+                    <td class="title">
+                        {% if entry.form.edit_url %}
+                            <a href="{{ entry.form.edit_url }}" title="{% trans 'Edit this form' %}">{{ entry.form.title }}</a>
+                        {% else %}
+                            {{ entry.form.title }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{% url 'wagtailadmin_explore' entry.page.id %}">{{ entry.page.title }}</a>
+                    </td>
+                    <td class="updated">{{ entry.submit_time }}</td>
+                    <td>{{ entry.form_data|truncatechars:255 }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block no_results_message %}
+    <p>{% trans "No form submissions found." %}</p>
+{% endblock %}

@@ -1,5 +1,6 @@
 import django_filters
 from django.utils.translation import gettext_lazy as _
+from wagtail import VERSION as WAGTAIL_VERSION
 from wagtail.admin.filters import DateRangePickerWidget, WagtailFilterSet
 from wagtail.admin.views.reports import ReportView
 
@@ -19,7 +20,9 @@ class FormSubmissionReportFilterSet(WagtailFilterSet):
 
 
 class FormSubmissionReportView(ReportView):
-    template_name = "wagtail_model_forms/form_submissions_report.html"
+    index_url_name = "form_submissions_report"
+    index_results_url_name = "form_submissions_report_results"
+    results_template_name = "wagtail_model_forms/form_submissions_report_results.html"
     title = _("Form submissions")
     header_icon = "form"
     export_headings = {
@@ -35,6 +38,17 @@ class FormSubmissionReportView(ReportView):
         "form_data",
     ]
     filterset_class = FormSubmissionReportFilterSet
+
+    # COMPAT: remove fallback template when Wagtail 6.2 is the minimum version
+    def get_template_names(self):
+        if WAGTAIL_VERSION < (6, 2):
+            return ["wagtail_model_forms/compat/form_submissions_report.html"]
+        return super().get_template_names()
+
+    @property
+    # COMPAT: move to direct attribute assignment when Wagtail 6.2 is the minimum version
+    def page_title(self):
+        return self.title
 
     def get_filename(self):
         return "form-submissions"
