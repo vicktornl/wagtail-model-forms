@@ -30,4 +30,9 @@ if REPORTS:
                 FormSubmissionReportView.as_view(),
                 name="form_submissions_report",
             ),
+            path(
+                "reports/form-submissions/results/",
+                FormSubmissionReportView.as_view(results_only=True),
+                name="form_submissions_report_results",
+            ),
         ]
