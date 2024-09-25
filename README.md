@@ -11,6 +11,8 @@ The Wagtail Form Builder functionalities available for your models/snippets.
 * Form block for StreamField support
 * Extensible models (Form, FormSubmission & FormBlock)
 * Reports
+* Email notifications
+* Webhooks * API integrations
 * Crispy forms support
 
 ## Requirements

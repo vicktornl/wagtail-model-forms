@@ -1,5 +1,9 @@
+from django.core.exceptions import ValidationError
+from django.template import Template
+from django.template.exceptions import TemplateSyntaxError
 from django.utils.translation import gettext_lazy as _
 from wagtail import blocks
+from wagtail.blocks import StructBlockValidationError
 from wagtail.fields import StreamField
 from wagtail.snippets.blocks import SnippetChooserBlock
 
@@ -289,3 +293,48 @@ class FormBlock(AbstractFormBlock):
     class Meta:
         icon = "form"
         template = "wagtail_model_forms/form.html"
+
+
+class WebhookBlock(blocks.StructBlock):
+    url = blocks.TextBlock(label=_("URL"))
+    method = blocks.ChoiceBlock(
+        label=_("Method"),
+        choices=(
+            ("get", _("GET")),
+            ("post", _("POST")),
+            ("put", _("PUT")),
+            ("patch", _("PATCH")),
+            ("delete", _("DELETE")),
+        ),
+        default="get",
+    )
+    request_headers = blocks.ListBlock(
+        blocks.StructBlock(
+            [
+                ("field_name", blocks.CharBlock(label=_("Field name"))),
+                ("field_value", blocks.CharBlock(label=_("Field value"))),
+            ]
+        ),
+        label=_("Request headers"),
+        required=False,
+    )
+
+    request_body = blocks.TextBlock(
+        label=_("Request body"),
+        required=False,
+        help_text=_("Optional mapping template for the webhook request"),
+    )
+
+    class Meta:
+        label = _("Webhook")
+
+    def clean(self, value):
+        result = super().clean(value)
+        if "request_body" in result:
+            try:
+                Template(result["request_body"])
+            except TemplateSyntaxError as err:
+                raise StructBlockValidationError(
+                    block_errors={"request_body": ValidationError(str(err))}
+                )
+        return result

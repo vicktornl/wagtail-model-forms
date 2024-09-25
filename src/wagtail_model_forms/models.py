@@ -1,4 +1,5 @@
 import json
+import logging
 from collections import OrderedDict
 
 from django import forms
@@ -10,7 +11,12 @@ from django.utils.html import conditional_escape
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 from modelcluster.models import ClusterableModel
-from wagtail.admin.panels import FieldPanel, ObjectList, TabbedInterface
+from wagtail.admin.panels import (
+    FieldPanel,
+    MultiFieldPanel,
+    ObjectList,
+    TabbedInterface,
+)
 from wagtail.contrib.forms.forms import FormBuilder as BaseFormBuilder
 from wagtail.contrib.forms.models import (
     AbstractFormField as WagtailAbstractFormField,
@@ -18,9 +24,13 @@ from wagtail.contrib.forms.models import (
 from wagtail.contrib.forms.models import (
     AbstractFormSubmission as WagtailAbstractFormSubmission,
 )
+from wagtail.fields import StreamField
 
 from wagtail_model_forms import get_submission_model
-from wagtail_model_forms.blocks import FIELDBLOCKS
+from wagtail_model_forms.blocks import FIELDBLOCKS, WebhookBlock
+from wagtail_model_forms.utils import trigger_webhook
+
+logger = logging.getLogger(__name__)
 
 
 def get_field_clean_name(field_value, namespace=""):
@@ -188,6 +198,107 @@ class FormBuilder(BaseFormBuilder):
             if choice["default_value"] == True:
                 values.append(choice["value"])
         return values
+
+
+class EmailNotificationsFormMixin(models.Model):
+    email_notifications_enabled = models.BooleanField(
+        default=False,
+        verbose_name=_("Email notifications enabled"),
+        help_text=_("Enable or disable the e-mail notifications"),
+    )
+    email_notifications_list = models.TextField(
+        null=True,
+        blank=True,
+        verbose_name=_("Email notification list"),
+        help_text=_(
+            "Comma-separated list of e-mail addresses which receive the notifications"
+        ),
+    )
+
+    email_notification_panels = [
+        MultiFieldPanel(
+            [
+                FieldPanel("email_notifications_enabled"),
+                FieldPanel("email_notifications_list"),
+            ],
+            heading=_("Email notifications"),
+        ),
+    ]
+
+    class Meta:
+        abstract = True
+
+    def get_email_notification_context(self, form_submission):
+        form_data = json.loads(form_submission.form_data)
+        context = {
+            "form": form_submission.form,
+            "form_data": form_data,
+            "page": form_submission.page,
+            "submit_time": form_submission.submit_time,
+        }
+        return context
+
+    def handle_email_notification(self, email, form_submission, context):
+        raise NotImplementedError
+
+    def handle_email_notifications(self, form_submission):
+        emails = [x.strip() for x in self.email_notifications_list.split(",")]
+        for email in emails:
+            logger.info(
+                "Email notification (ForSubmission#%s) for '%s'"
+                % (form_submission.id, email)
+            )
+            context = self.get_email_notification_context(form_submission)
+            self.handle_email_notification(email, form_submission, context)
+
+    def process_form_submission(self, form, page=None, request=None):
+        form_submission = super().process_form_submission(form, page, request=request)
+        if self.email_notifications_enabled:
+            self.handle_email_notifications(form_submission)
+        return form_submission
+
+
+class WebhooksFormMixin(models.Model):
+    webhooks_enabled = models.BooleanField(
+        default=False,
+        verbose_name=_("Webhooks enabled"),
+        help_text=_("Enable to trigger the webhooks when this form is submitted"),
+    )
+    webhooks = StreamField(
+        [
+            ("webhook", WebhookBlock()),
+        ],
+        null=True,
+        blank=True,
+        verbose_name=_("Webhooks"),
+    )
+
+    webhook_panels = [
+        MultiFieldPanel(
+            [
+                FieldPanel("webhooks_enabled"),
+                FieldPanel("webhooks"),
+            ],
+            heading=_("Webhooks"),
+        ),
+    ]
+
+    class Meta:
+        abstract = True
+
+    def handle_webhook(self, webhook, form_submission):
+        trigger_webhook(webhook, form_submission)
+
+    def handle_webhooks(self, form_submission):
+        for webhook in self.webhooks:
+            logger.info("Webhook (ForSubmission#%s)" % form_submission.id)
+            self.handle_webhook(dict(webhook.value), form_submission)
+
+    def process_form_submission(self, form, page=None, request=None):
+        form_submission = super().process_form_submission(form, page, request=request)
+        if self.webhooks_enabled:
+            self.handle_webhooks(form_submission)
+        return form_submission
 
 
 class AbstractForm(ClusterableModel):
