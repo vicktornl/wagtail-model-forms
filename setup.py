@@ -1,4 +1,9 @@
+from pathlib import Path
+
 from setuptools import find_packages, setup
+
+this_directory = Path(__file__).parent
+long_description = (this_directory / "README.md").read_text()
 
 install_requires = ["wagtail>=2"]
 
@@ -15,7 +20,9 @@ tests_requires = [
 setup(
     name="wagtail-model-forms",
     version="0.6.0",
-    description="",
+    description="The Wagtail Form Builder functionalities available for your models/snippets.",
+    long_description=long_description,
+    long_description_content_type="text/markdown",
     author="R. Moorman <rob@vicktor.nl>",
     install_requires=install_requires,
     tests_requires=tests_requires,

@@ -184,6 +184,12 @@ class MultipleSelectFieldBlock(ChoicesMixin, AbstractFormFieldBlock):
         label = _("Multiselect")
 
 
+class FileFieldBlock(AbstractFormFieldBlock):
+    class Meta:
+        icon = "doc-full"
+        label = _("File")
+
+
 TEXT_INPUT_FIELDBLOCKS = [
     ("singleline", SingleLineTextFieldBlock()),
     ("multiline", MultipleLineTextFieldBlock()),
@@ -206,7 +212,13 @@ UTILITY_FIELDBLOCKS = [
     ("multiselect", MultipleSelectFieldBlock()),
 ]
 
-COMMON_FIELDBLOCKS = TEXT_INPUT_FIELDBLOCKS + CHOICE_FIELDBLOCKS + UTILITY_FIELDBLOCKS
+FILE_FIELDBLOCKS = [
+    ("file", FileFieldBlock()),
+]
+
+COMMON_FIELDBLOCKS = (
+    TEXT_INPUT_FIELDBLOCKS + CHOICE_FIELDBLOCKS + UTILITY_FIELDBLOCKS + FILE_FIELDBLOCKS
+)
 
 
 class FieldRowBlock(blocks.StructBlock):

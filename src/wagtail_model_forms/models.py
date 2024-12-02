@@ -4,6 +4,7 @@ from collections import OrderedDict
 
 from django import forms
 from django.conf import settings
+from django.core.files.uploadedfile import UploadedFile
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models
 from django.utils.functional import cached_property
@@ -26,8 +27,9 @@ from wagtail.contrib.forms.models import (
 )
 from wagtail.fields import StreamField
 
-from wagtail_model_forms import get_submission_model
+from wagtail_model_forms import get_submission_model, get_uploaded_file_model
 from wagtail_model_forms.blocks import FIELDBLOCKS, WebhookBlock
+from wagtail_model_forms.settings import FORM_MODEL, SUBMISSION_MODEL
 from wagtail_model_forms.utils import trigger_webhook
 
 logger = logging.getLogger(__name__)
@@ -41,6 +43,12 @@ def get_field_clean_name(field_value, namespace=""):
 
 
 class AbstractFormSubmission(WagtailAbstractFormSubmission):
+    form = models.ForeignKey(
+        FORM_MODEL,
+        on_delete=models.CASCADE,
+        related_name="+",
+        verbose_name=_("Form"),
+    )
     page = models.ForeignKey(
         "wagtailcore.Page",
         null=True,
@@ -54,6 +62,25 @@ class AbstractFormSubmission(WagtailAbstractFormSubmission):
 
     def __str__(self):
         return str(self.form)
+
+
+class AbstractUploadedFile(models.Model):
+    form_submission = models.ForeignKey(
+        SUBMISSION_MODEL,
+        on_delete=models.CASCADE,
+        related_name="+",
+    )
+    file = models.FileField()
+    created_at = models.DateTimeField(
+        verbose_name=_("created at"),
+        auto_now_add=True,
+    )
+
+    class Meta:
+        abstract = True
+
+    def __str__(self):
+        return str(self.form_submission)
 
 
 class AbstractFormField(WagtailAbstractFormField):
@@ -125,6 +152,9 @@ class FormBuilder(BaseFormBuilder):
         options["choices"] = self.get_formatted_field_choices(field)
         options["initial"] = self.get_formatted_field_initial(field)
         return forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple, **options)
+
+    def create_file_field(self, field, options):
+        return forms.FileField(**options)
 
     def handle_normal_field(self, structvalue, formfields, namespace=""):
         field = structvalue.value
@@ -359,9 +389,21 @@ class AbstractForm(ClusterableModel):
     def get_submission_class(self):
         return get_submission_model()
 
+    def get_uploaded_file_class(self):
+        return get_uploaded_file_model()
+
     def get_form_data(self, form, request=None):
         form_data = form.cleaned_data
-        return form_data
+        cleaned_form_data = self.clean_form_data(form_data)
+        return cleaned_form_data
+
+    def clean_form_data(self, form_data):
+        cleaned_form_data = {}
+        for key, value in form_data.items():
+            if isinstance(value, UploadedFile):
+                continue
+            cleaned_form_data[key] = value
+        return cleaned_form_data
 
     def process_form_submission(self, form, page=None, request=None):
         form_data = json.dumps(
@@ -371,5 +413,15 @@ class AbstractForm(ClusterableModel):
         form_submission = self.get_submission_class().objects.create(
             form_data=form_data, form=self, page=page
         )
-        form_submission.save()
+        try:
+            for field_name in request.FILES:
+                file = request.FILES[field_name]
+                uploaded_file = self.get_uploaded_file_class().objects.create(
+                    form_submission=form_submission,
+                    file=file,
+                )
+        except AttributeError:
+            logger.warning(
+                "Could not upload file, WAGTAIL_MODEL_FORMS_UPLOADED_FILE_MODEL is not configured"
+            )
         return form_submission

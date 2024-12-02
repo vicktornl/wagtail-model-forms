@@ -9,10 +9,11 @@ The Wagtail Form Builder functionalities available for your models/snippets.
 
 * Well-known Form Builder functionalities
 * Form block for StreamField support
-* Extensible models (Form, FormSubmission & FormBlock)
+* Extensible models (Form, FormSubmission, UploadedFile & FormBlock)
+* File uploads
 * Reports
 * Email notifications
-* Webhooks * API integrations
+* Webhooks & API integrations
 * Crispy forms support
 
 ## Requirements
@@ -46,15 +47,7 @@ from modelcluster.fields import ParentalKey
 from wagtail.core.models import Page
 from wagtail.snippets.models import register_snippet
 from wagtail_model_forms.mixins import FormSnippetMixin
-from wagtail_model_forms.models import AbstractForm, AbstractFormField, AbstractFormSubmission
-
-
-class FormField(AbstractFormField):
-    model = ParentalKey(
-        "Form",
-        on_delete=models.CASCADE,
-        related_name="form_fields",
-    )
+from wagtail_model_forms.models import AbstractForm, AbstractUploadedFile, AbstractFormSubmission
 
 
 class FormSubmission(AbstractFormSubmission):
@@ -64,6 +57,10 @@ class FormSubmission(AbstractFormSubmission):
         related_name="+",
         verbose_name=_("Form"),
     )
+
+
+class UploadedFile(AbstractUploadedFile):
+    pass
 
 
 @register_snippet
@@ -120,6 +117,10 @@ Default `True`
 Must be of the form `app_label.model_name`
 
 ###### WAGTAIL_MODEL_FORMS_SUBMISSION_MODEL
+
+Must be of the form `app_label.model_name`
+
+###### WAGTAIL_MODEL_FORMS_UPLOADED_FILE_MODEL
 
 Must be of the form `app_label.model_name`
 
