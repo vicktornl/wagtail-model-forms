@@ -19,7 +19,7 @@ tests_requires = [
 
 setup(
     name="wagtail-model-forms",
-    version="0.6.0",
+    version="0.7.0",
     description="The Wagtail Form Builder functionalities available for your models/snippets.",
     long_description=long_description,
     long_description_content_type="text/markdown",
