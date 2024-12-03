@@ -264,6 +264,7 @@ FIELDBLOCKS = StreamField(
         ("checkbox", CheckboxFieldBlock()),
         ("checkboxes", CheckboxesFieldBlock()),
         ("multiselect", MultipleSelectFieldBlock()),
+        ("file", FileFieldBlock()),
         ("hidden", HiddenFieldBlock()),
     ],
     blank=True,
