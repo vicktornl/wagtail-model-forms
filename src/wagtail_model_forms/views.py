@@ -1,7 +1,14 @@
+import json
+
 import django_filters
+from django.shortcuts import get_object_or_404
+from django.urls import reverse_lazy
+from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
+from django.views.generic.base import TemplateView
 from wagtail import VERSION as WAGTAIL_VERSION
 from wagtail.admin.filters import DateRangePickerWidget, WagtailFilterSet
+from wagtail.admin.views.generic import InspectView
 from wagtail.admin.views.reports import ReportView
 
 from wagtail_model_forms import get_submission_model
@@ -16,7 +23,7 @@ class FormSubmissionReportFilterSet(WagtailFilterSet):
 
     class Meta:
         model = FormSubmission
-        fields = ["submit_time", "form"]
+        fields = ["submit_time", "form", "status"]
 
 
 class FormSubmissionReportView(ReportView):
@@ -60,3 +67,39 @@ class FormSubmissionReportView(ReportView):
             .select_related("page")
             .order_by("-submit_time")
         )
+
+
+class FormSubmissionDetailView(InspectView):
+    model = FormSubmission
+    index_url_name = "form_submissions_report"
+    _show_breadcrumbs = True
+
+    def get_page_title(self):
+        return str(self.object.form)
+
+    def get_breadcrumbs_items(self):
+        return self.breadcrumbs_items + [
+            {
+                "url": reverse_lazy("form_submissions_report"),
+                "label": _("Form submissions"),
+            },
+            {"url": "", "label": str(self.object.form)},
+        ]
+
+    def get_fields(self):
+        return ["form", "page", "submit_time", "status", "form_data"]
+
+    def get_field_label(self, field_name, field):
+        if field_name == "form_data":
+            return _("Submitted form data")
+        return super().get_field_label(field_name, field)
+
+    def get_field_display_value(self, field_name, field):
+        if field_name == "form_data":
+            result = ""
+            form_data = getattr(self.object, field_name)
+            form_data = json.loads(form_data)
+            for key, value in form_data.items():
+                result += "%s: %s" % (key, value)
+            return result
+        return super().get_field_display_value(field_name, field)

@@ -43,10 +43,14 @@ def get_field_clean_name(field_value, namespace=""):
 
 
 class AbstractFormSubmission(WagtailAbstractFormSubmission):
+    class Status(models.TextChoices):
+        NEW = "new", _("New")
+        COMPLETED = "completed", _("Completed")
+
     form = models.ForeignKey(
-        FORM_MODEL,
+        "cms.Form",
         on_delete=models.CASCADE,
-        related_name="+",
+        related_name="form_submissions",
         verbose_name=_("Form"),
     )
     page = models.ForeignKey(
@@ -55,6 +59,12 @@ class AbstractFormSubmission(WagtailAbstractFormSubmission):
         on_delete=models.SET_NULL,
         related_name="+",
         verbose_name=_("Page"),
+    )
+    status = models.CharField(
+        max_length=255,
+        choices=Status,
+        default=Status.NEW,
+        verbose_name=_("Status"),
     )
 
     class Meta:
@@ -68,7 +78,7 @@ class AbstractUploadedFile(models.Model):
     form_submission = models.ForeignKey(
         SUBMISSION_MODEL,
         on_delete=models.CASCADE,
-        related_name="+",
+        related_name="uploaded_files",
     )
     file = models.FileField()
     created_at = models.DateTimeField(
