@@ -8,7 +8,7 @@ from django.utils.translation import gettext_lazy as _
 from django.views.generic.base import TemplateView
 from wagtail import VERSION as WAGTAIL_VERSION
 from wagtail.admin.filters import DateRangePickerWidget, WagtailFilterSet
-from wagtail.admin.views.generic import InspectView
+from wagtail.admin.views.generic import DeleteView, EditView, InspectView
 from wagtail.admin.views.reports import ReportView
 
 from wagtail_model_forms import get_submission_model
@@ -72,6 +72,8 @@ class FormSubmissionReportView(ReportView):
 class FormSubmissionDetailView(InspectView):
     model = FormSubmission
     index_url_name = "form_submissions_report"
+    delete_url_name = "delete_form_submission"
+    edit_url_name = "edit_form_submission"
     _show_breadcrumbs = True
 
     def get_page_title(self):
@@ -87,7 +89,8 @@ class FormSubmissionDetailView(InspectView):
         ]
 
     def get_fields(self):
-        return ["form", "page", "submit_time", "status", "form_data"]
+        fields = ["form", "page", "submit_time", "status", "form_data", "uploaded_files"]
+        return fields
 
     def get_field_label(self, field_name, field):
         if field_name == "form_data":
@@ -100,6 +103,33 @@ class FormSubmissionDetailView(InspectView):
             form_data = getattr(self.object, field_name)
             form_data = json.loads(form_data)
             for key, value in form_data.items():
-                result += "%s: %s" % (key, value)
-            return result
+                if value:
+                    result += "%s: %s<br>" % (key, value)
+            return format_html(result)
+
+        if field_name == "uploaded_files":
+            result = "<ul>"
+            for uploaded_file in getattr(self.object, field_name, FormSubmission.objects.none()).all():
+                result += '<li><a href="%s" target="_blank">%s</a></li>' % (
+                    uploaded_file.file.url,
+                    uploaded_file.file.name,
+                )
+            result += "</ul>"
+            return format_html(result)
+                
         return super().get_field_display_value(field_name, field)
+
+
+class EditFormSubmissionView(EditView):
+    model = FormSubmission
+    index_url_name = "form_submissions_report"
+    delete_url_name = "delete_form_submission"
+    edit_url_name = "edit_form_submission"
+    fields = ["status"]
+
+
+class DeleteFormSubmissionView(DeleteView):
+    model = FormSubmission
+    index_url_name = "form_submissions_report"
+    delete_url_name = "delete_form_submission"
+    edit_url_name = "edit_form_submission"

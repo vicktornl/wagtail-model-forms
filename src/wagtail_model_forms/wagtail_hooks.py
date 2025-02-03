@@ -6,6 +6,8 @@ from wagtail.admin.site_summary import SummaryItem
 from wagtail_model_forms import get_submission_model
 from wagtail_model_forms.settings import REPORTS
 from wagtail_model_forms.views import (
+    DeleteFormSubmissionView,
+    EditFormSubmissionView,
     FormSubmissionDetailView,
     FormSubmissionReportView,
 )
@@ -60,6 +62,16 @@ if REPORTS:
                 "reports/form-submissions/<int:pk>/",
                 FormSubmissionDetailView.as_view(),
                 name="form_submissions_detail",
+            ),
+            path(
+                "reports/form-submissions/<int:pk>/edit/",
+                EditFormSubmissionView.as_view(),
+                name="edit_form_submission",
+            ),
+            path(
+                "reports/form-submissions/<int:pk>/delete/",
+                DeleteFormSubmissionView.as_view(),
+                name="delete_form_submission",
             ),
             path(
                 "reports/form-submissions/results/",
