@@ -122,7 +122,7 @@ class FormSubmissionDetailView(InspectView):
                 self.object, field_name, FormSubmission.objects.none()
             ).all():
                 result += '<li><a href="%s" target="_blank">%s</a></li>' % (
-                    uploaded_file.url,
+                    uploaded_file.download_url,
                     uploaded_file.file.name,
                 )
             result += "</ul>"
