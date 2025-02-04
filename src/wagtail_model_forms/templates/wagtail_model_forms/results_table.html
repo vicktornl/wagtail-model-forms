@@ -1,0 +1,52 @@
+{% load i18n wagtailadmin_tags %}
+
+<table class="listing">
+    <thead>
+        <tr>
+            <th class="title">
+                {% trans "Form" %}
+            </th>
+            <th>
+                {% trans "Page" %}
+            </th>
+            <th class="status">
+                {% trans "Status" %}
+            </th>
+            <th class="updated">
+                {% trans "Date / Time" %}
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for entry in object_list %}
+            <tr>
+                <td class="title">
+                    {% if entry.form.edit_url %}
+                        <a href="{% url 'form_submissions_detail' entry.id %}" title="{% trans 'View details' %}">
+                            {{ entry.form.title }}
+                        </a>
+                    {% else %}
+                        {{ entry.form.title }}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if entry.page %}
+                        <a href="{% url 'wagtailadmin_explore' entry.page.id %}">
+                            {{ entry.page.title }}
+                        </a>
+                    {% else %}
+                        <i>{% trans "Deleted page" %}</i>
+                    {% endif %}
+                </td>
+                <td class="status">
+                    <span class="w-status w-status--primary">
+                        {{ entry.get_status_display }}
+                    </span>
+                </td>
+                <td class="updated">
+                    {% human_readable_date entry.submit_time %}
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

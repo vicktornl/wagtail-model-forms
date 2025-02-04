@@ -1,0 +1,12 @@
+{% load i18n wagtailadmin_tags %}
+
+<li>
+    {% icon name="form" %}
+    <a href="{% url 'form_submissions_report' %}">
+        {% blocktrans trimmed count counter=new_form_submissions with new_form_submissions|intcomma as total %}
+            <span>{{ new_form_submissions }}</span> Form submission</span>
+        {% plural %}
+            <span>{{ new_form_submissions }}</span> Form submissions</span>
+        {% endblocktrans %}
+    </a>
+</li>

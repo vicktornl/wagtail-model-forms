@@ -10,6 +10,7 @@ The Wagtail Form Builder functionalities available for your models/snippets.
 * Well-known Form Builder functionalities
 * Form block for StreamField support
 * Extensible models (Form, FormSubmission, UploadedFile & FormBlock)
+* Inspect, edit and delete views for form submissions
 * File uploads
 * Reports
 * Email notifications
