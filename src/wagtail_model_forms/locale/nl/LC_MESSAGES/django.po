@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-03 05:50-0500\n"
+"POT-Creation-Date: 2025-02-04 10:17+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,152 +18,260 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: blocks.py:11
+#: blocks.py:15
 msgid "Label"
-msgstr ""
+msgstr "Label"
 
-#: blocks.py:16
+#: blocks.py:20
 msgid "Help text"
 msgstr "Helptekst"
 
-#: blocks.py:21
+#: blocks.py:25
 msgid "Required"
 msgstr "Verplicht"
 
-#: blocks.py:22
+#: blocks.py:26
 msgid "Check this box if this field is required to be filled in"
 msgstr "Vink dit vakje aan als dit veld verplicht moet worden ingevuld."
 
-#: blocks.py:30
+#: blocks.py:34
 msgid "Choice"
 msgstr "Keuze"
 
-#: blocks.py:33 blocks.py:158
+#: blocks.py:37 blocks.py:162
 msgid "Checked by default"
 msgstr "Standaard aangevinkt"
 
-#: blocks.py:34
+#: blocks.py:38
 msgid "Check this box if you want this to be checked by default"
 msgstr "Vink dit vakje aan als je wilt dat dit standaard wordt ingeschakeld."
 
-#: blocks.py:41 blocks.py:52 blocks.py:105 blocks.py:120 blocks.py:135
+#: blocks.py:45 blocks.py:56 blocks.py:109 blocks.py:124 blocks.py:139
 msgid "Placeholder"
-msgstr ""
+msgstr "Placeholder"
 
-#: blocks.py:48 blocks.py:59 blocks.py:101 blocks.py:116 blocks.py:131
+#: blocks.py:52 blocks.py:63 blocks.py:105 blocks.py:120 blocks.py:135
 msgid "Default value"
 msgstr "Standaard waarde"
 
-#: blocks.py:66
+#: blocks.py:70
 msgid "Choices"
 msgstr "Keuzes"
 
-#: blocks.py:75
+#: blocks.py:79
 msgid "Singleline text"
 msgstr "Enkele tekstregel"
 
-#: blocks.py:83
+#: blocks.py:87
 msgid "Multiline text"
 msgstr "Meerdere tekstregels"
 
-#: blocks.py:89
+#: blocks.py:93
 msgid "Email"
 msgstr "Email"
 
-#: blocks.py:95
+#: blocks.py:99 blocks.py:312
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
-#: blocks.py:110
+#: blocks.py:114
 msgid "Number"
 msgstr "Nummer"
 
-#: blocks.py:125
+#: blocks.py:129
 msgid "Date"
 msgstr "Datum"
 
-#: blocks.py:140
+#: blocks.py:144
 msgid "Date and time"
 msgstr "Datum en tijd"
 
-#: blocks.py:146
+#: blocks.py:150
 msgid "Dropdown"
 msgstr ""
 
-#: blocks.py:152
+#: blocks.py:156
 msgid "Radio group"
 msgstr ""
 
-#: blocks.py:163
+#: blocks.py:167
 msgid "Checkbox"
 msgstr ""
 
-#: blocks.py:169
+#: blocks.py:173
 msgid "Checkboxes"
-msgstr "Checkboxen"
+msgstr ""
 
-#: blocks.py:180
+#: blocks.py:184
 msgid "Multiselect"
 msgstr "Multiselect"
 
-#: blocks.py:213 blocks.py:228 blocks.py:255
+#: blocks.py:190
+msgid "File"
+msgstr "Bestand"
+
+#: blocks.py:229 blocks.py:244 blocks.py:272
 msgid "Form fields"
 msgstr "Formuliervelden"
 
-#: blocks.py:222
+#: blocks.py:238
 msgid "Legend"
 msgstr "Legende"
 
-#: models.py:39
-#: templates/wagtail_model_forms/compat/form_submissions_report.html:14
-#: templates/wagtail_model_forms/form_submissions_report_results.html:13
-#: views.py:30
-msgid "Page"
-msgstr "Pagina"
+#: blocks.py:314
+msgid "Method"
+msgstr ""
 
-#: models.py:195
-msgid "title"
-msgstr "titel"
+#: blocks.py:316
+msgid "GET"
+msgstr ""
 
-#: models.py:210
-#: templates/wagtail_model_forms/compat/form_submissions_report.html:11
-#: templates/wagtail_model_forms/form_submissions_report_results.html:10
-#: views.py:29
+#: blocks.py:317
+msgid "POST"
+msgstr ""
+
+#: blocks.py:318
+msgid "PUT"
+msgstr ""
+
+#: blocks.py:319
+msgid "PATCH"
+msgstr ""
+
+#: blocks.py:320
+msgid "DELETE"
+msgstr ""
+
+#: blocks.py:327
+msgid "Field name"
+msgstr "Veldnaam"
+
+#: blocks.py:328
+msgid "Field value"
+msgstr "Veldwaarde"
+
+#: blocks.py:331
+msgid "Request headers"
+msgstr ""
+
+#: blocks.py:336
+msgid "Request body"
+msgstr ""
+
+#: blocks.py:338
+msgid "Optional mapping template for the webhook request"
+msgstr ""
+
+#: blocks.py:342
+msgid "Webhook"
+msgstr ""
+
+#: models.py:47
+msgid "New"
+msgstr "Nieuw"
+
+#: models.py:48
+msgid "Completed"
+msgstr "Afgehandeld"
+
+#: models.py:54 models.py:361
+#: templates/wagtail_model_forms/results_table.html:7 views.py:36
 msgid "Form"
 msgstr "Formulier"
 
-#: models.py:229
+#: models.py:61 templates/wagtail_model_forms/results_table.html:10 views.py:37
+msgid "Page"
+msgstr "Pagina"
+
+#: models.py:67 templates/wagtail_model_forms/results_table.html:13
+msgid "Status"
+msgstr ""
+
+#: models.py:85
+msgid "created at"
+msgstr ""
+
+#: models.py:246
+msgid "Email notifications enabled"
+msgstr ""
+
+#: models.py:247
+msgid "Enable or disable the e-mail notifications"
+msgstr ""
+
+#: models.py:252
+msgid "Email notification list"
+msgstr ""
+
+#: models.py:254
+msgid ""
+"Comma-separated list of e-mail addresses which receive the notifications"
+msgstr ""
+
+#: models.py:264
+msgid "Email notifications"
+msgstr ""
+
+#: models.py:304
+msgid "Webhooks enabled"
+msgstr ""
+
+#: models.py:305
+msgid "Enable to trigger the webhooks when this form is submitted"
+msgstr ""
+
+#: models.py:313 models.py:322
+msgid "Webhooks"
+msgstr ""
+
+#: models.py:346
+msgid "title"
+msgstr "titel"
+
+#: models.py:380
 msgid "Submission date"
 msgstr "Datum indiening"
 
-#: templates/wagtail_model_forms/compat/form_submissions_report.html:17
-#: templates/wagtail_model_forms/form_submissions_report_results.html:16
-#: views.py:14 views.py:31
-msgid "Date / Time"
-msgstr "Datum / tijd"
-
-#: templates/wagtail_model_forms/compat/form_submissions_report.html:20
-#: templates/wagtail_model_forms/form_submissions_report_results.html:19
-#: views.py:32
-msgid "Data"
-msgstr "Data"
-
-#: templates/wagtail_model_forms/compat/form_submissions_report.html:29
-#: templates/wagtail_model_forms/form_submissions_report_results.html:28
-msgid "Edit this form"
-msgstr "Wijzig dit formulier"
-
-#: templates/wagtail_model_forms/compat/form_submissions_report.html:38
-#: templates/wagtail_model_forms/form_submissions_report_results.html:37
-msgid "Deleted page"
-msgstr "Verwijderde pagina"
-
-#: templates/wagtail_model_forms/compat/form_submissions_report.html:48
-#: templates/wagtail_model_forms/compat/form_submissions_report.html:53
-#: templates/wagtail_model_forms/form_submissions_report_results.html:49
+#: templates/wagtail_model_forms/compat/form_submissions_report.html:9
+#: templates/wagtail_model_forms/compat/form_submissions_report.html:14
+#: templates/wagtail_model_forms/form_submissions_report_results.html:10
 msgid "No form submissions found."
 msgstr "Geen formulierinzendingen gevonden."
 
-#: views.py:26
+#: templates/wagtail_model_forms/results_table.html:16 views.py:21 views.py:38
+msgid "Date / Time"
+msgstr "Datum / tijd"
+
+#: templates/wagtail_model_forms/results_table.html:25
+msgid "View details"
+msgstr "Bekijk details"
+
+#: templates/wagtail_model_forms/results_table.html:38
+msgid "Deleted page"
+msgstr "Verwijderde pagina"
+
+#: templates/wagtail_model_forms/summary.html:6
+#, python-format
+msgid "<span>%(new_form_submissions)s</span> Form submission</span>"
+msgid_plural "<span>%(new_form_submissions)s</span> Form submissions</span>"
+msgstr[0] "<span>%(new_form_submissions)s</span> Formulierinzending</span>"
+msgstr[1] "<span>%(new_form_submissions)s</span> Formulierinzendingen</span>"
+
+#: views.py:33 views.py:86
 msgid "Form submissions"
 msgstr "Formulierinzendingen"
+
+#: views.py:39
+msgid "Data"
+msgstr "Data"
+
+#: views.py:97
+msgid "Submitted form data"
+msgstr "Ingevoerde formulierdata"
+
+#: views.py:99
+msgid "Uploaded files"
+msgstr "Geuploade bestanden"
+
+#~ msgid "Edit this form"
+#~ msgstr "Wijzig dit formulier"

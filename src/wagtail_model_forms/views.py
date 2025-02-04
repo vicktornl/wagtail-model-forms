@@ -95,6 +95,8 @@ class FormSubmissionDetailView(InspectView):
     def get_field_label(self, field_name, field):
         if field_name == "form_data":
             return _("Submitted form data")
+        if field_name == "uploaded_files":
+            return _("Uploaded files")
         return super().get_field_label(field_name, field)
 
     def get_field_display_value(self, field_name, field):
