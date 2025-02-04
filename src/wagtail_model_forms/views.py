@@ -89,7 +89,14 @@ class FormSubmissionDetailView(InspectView):
         ]
 
     def get_fields(self):
-        fields = ["form", "page", "submit_time", "status", "form_data", "uploaded_files"]
+        fields = [
+            "form",
+            "page",
+            "submit_time",
+            "status",
+            "form_data",
+            "uploaded_files",
+        ]
         return fields
 
     def get_field_label(self, field_name, field):
@@ -111,14 +118,16 @@ class FormSubmissionDetailView(InspectView):
 
         if field_name == "uploaded_files":
             result = "<ul>"
-            for uploaded_file in getattr(self.object, field_name, FormSubmission.objects.none()).all():
+            for uploaded_file in getattr(
+                self.object, field_name, FormSubmission.objects.none()
+            ).all():
                 result += '<li><a href="%s" target="_blank">%s</a></li>' % (
-                    uploaded_file.file.url,
+                    uploaded_file.url,
                     uploaded_file.file.name,
                 )
             result += "</ul>"
             return format_html(result)
-                
+
         return super().get_field_display_value(field_name, field)
 
 

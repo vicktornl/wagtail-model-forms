@@ -92,6 +92,10 @@ class AbstractUploadedFile(models.Model):
     def __str__(self):
         return str(self.form_submission)
 
+    @property
+    def download_url(self):
+        return self.file.url
+
 
 class AbstractFormField(WagtailAbstractFormField):
     class Meta:
