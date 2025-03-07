@@ -103,71 +103,71 @@ class AbstractFormField(WagtailAbstractFormField):
 
 
 class FormBuilder(BaseFormBuilder):
-    def create_singleline_field(self, field, options):
+    def create_singleline_field(self, field, options, default_widget_attrs={}):
         # TODO: This is a default value - it may need to be changed
         options["max_length"] = 255
         return forms.CharField(
-            widget=forms.TextInput(attrs={"placeholder": field["placeholder"]}),
+            widget=forms.TextInput(attrs=default_widget_attrs),
             **options
         )
 
-    def create_multiline_field(self, field, options):
+    def create_multiline_field(self, field, options, default_widget_attrs={}):
         return forms.CharField(
-            widget=forms.Textarea(attrs={"placeholder": field["placeholder"]}),
+            widget=forms.Textarea(attrs=default_widget_attrs),
             **options
         )
 
-    def create_date_field(self, field, options):
+    def create_date_field(self, field, options, default_widget_attrs={}):
         return forms.DateField(
-            widget=forms.DateInput(attrs={"placeholder": field["placeholder"]}),
+            widget=forms.DateInput(attrs=default_widget_attrs),
             **options
         )
 
-    def create_datetime_field(self, field, options):
+    def create_datetime_field(self, field, options, default_widget_attrs={}):
         return forms.DateTimeField(
-            widget=forms.DateTimeInput(attrs={"placeholder": field["placeholder"]}),
+            widget=forms.DateTimeInput(attrs=default_widget_attrs),
             **options
         )
 
-    def create_email_field(self, field, options):
+    def create_email_field(self, field, options, default_widget_attrs={}):
         return forms.EmailField(
-            widget=forms.EmailInput(attrs={"placeholder": field["placeholder"]}),
+            widget=forms.EmailInput(attrs=default_widget_attrs),
             **options
         )
 
-    def create_url_field(self, field, options):
+    def create_url_field(self, field, options, default_widget_attrs={}):
         return forms.URLField(
-            widget=forms.URLInput(attrs={"placeholder": field["placeholder"]}),
+            widget=forms.URLInput(attrs=default_widget_attrs),
             **options
         )
 
-    def create_number_field(self, field, options):
+    def create_number_field(self, field, options, default_widget_attrs={}):
         return forms.DecimalField(
-            widget=forms.NumberInput(attrs={"placeholder": field["placeholder"]}),
+            widget=forms.NumberInput(attrs=default_widget_attrs),
             **options
         )
 
-    def create_dropdown_field(self, field, options):
+    def create_dropdown_field(self, field, options, default_widget_attrs={}):
         options["choices"] = self.get_formatted_field_choices(field)
         options["initial"] = self.get_formatted_field_initial(field)
         return forms.ChoiceField(**options)
 
-    def create_multiselect_field(self, field, options):
+    def create_multiselect_field(self, field, options, default_widget_attrs={}):
         options["choices"] = self.get_formatted_field_choices(field)
         options["initial"] = self.get_formatted_field_initial(field)
         return forms.MultipleChoiceField(**options)
 
-    def create_radio_field(self, field, options):
+    def create_radio_field(self, field, options, default_widget_attrs={}):
         options["choices"] = self.get_formatted_field_choices(field)
         options["initial"] = self.get_formatted_field_initial(field)
         return forms.ChoiceField(widget=forms.RadioSelect, **options)
 
-    def create_checkboxes_field(self, field, options):
+    def create_checkboxes_field(self, field, options, default_widget_attrs={}):
         options["choices"] = self.get_formatted_field_choices(field)
         options["initial"] = self.get_formatted_field_initial(field)
         return forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple, **options)
 
-    def create_file_field(self, field, options):
+    def create_file_field(self, field, options, default_widget_attrs={}):
         return forms.FileField(**options)
 
     def handle_normal_field(self, structvalue, formfields, namespace=""):
@@ -175,8 +175,9 @@ class FormBuilder(BaseFormBuilder):
         options = self.get_field_options(field)
         create_field = self.get_create_field_function(str(structvalue.block_type))
         clean_name = get_field_clean_name(field, namespace)
+        default_widget_attrs = self.get_default_widget_attrs(field)
 
-        formfields[clean_name] = create_field(field, options)
+        formfields[clean_name] = create_field(field, options, default_widget_attrs)
 
     def handle_fieldset(self, structvalue, formfields, namespace=""):
         fieldset = structvalue.value
@@ -209,6 +210,12 @@ class FormBuilder(BaseFormBuilder):
             else:
                 self.handle_normal_field(structvalue, formfields, namespace="")
         return formfields
+
+    def get_default_widget_attrs(self, field):
+        attrs = {}
+        if field["placeholder"]:
+            attrs["placeholder"] = field["placeholder"]
+        return attrs
 
     def get_field_options(self, field):
         """
