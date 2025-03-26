@@ -213,8 +213,11 @@ class FormBuilder(BaseFormBuilder):
 
     def get_default_widget_attrs(self, field):
         attrs = {}
-        if field["placeholder"]:
-            attrs["placeholder"] = field["placeholder"]
+        try:
+            if field["placeholder"]:
+                attrs["placeholder"] = field["placeholder"]
+        except KeyError:
+            pass
         return attrs
 
     def get_field_options(self, field):
