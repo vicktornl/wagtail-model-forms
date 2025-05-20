@@ -162,6 +162,11 @@ class FormBuilder(BaseFormBuilder):
         options["initial"] = self.get_formatted_field_initial(field)
         return forms.ChoiceField(widget=forms.RadioSelect, **options)
 
+    def create_checkbox_field(self, field, options, default_widget_attrs={}):
+        return forms.BooleanField(
+            widget=forms.CheckboxInput(attrs=default_widget_attrs), **options
+        )
+
     def create_checkboxes_field(self, field, options, default_widget_attrs={}):
         options["choices"] = self.get_formatted_field_choices(field)
         options["initial"] = self.get_formatted_field_initial(field)
