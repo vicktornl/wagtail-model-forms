@@ -282,7 +282,7 @@ class AbstractFormBlock(blocks.StructBlock):
 
     def get_context(self, value, parent_context=None):
         context = super().get_context(value, parent_context=parent_context)
-        page = context["page"]
+        page = context["page"] if "page" in context else None
         request = context["request"]
         user = request.user
         form_obj = context["self"]["form"]
