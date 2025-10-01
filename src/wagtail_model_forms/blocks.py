@@ -290,8 +290,11 @@ class AbstractFormBlock(blocks.StructBlock):
         if request.method == "POST" and "form_id" in request.POST:
             user = request.user
 
-            form = form_obj.get_form(request.POST, request.FILES, page=page, user=user)
-            form.is_valid()
+            if str(form_obj.id) == str(request.POST.get("form_id")):
+                form = form_obj.get_form(request.POST, request.FILES, page=page, user=user)
+                form.is_valid()
+            else:
+                form = form_obj.get_form(page=page, user=user)
         else:
             form = form_obj.get_form(page=page, user=user)
 
