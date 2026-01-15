@@ -155,6 +155,7 @@ class FormSubmissionDetailView(InspectView):
     index_url_name = "form_submissions_report"
     delete_url_name = "delete_form_submission"
     edit_url_name = "edit_form_submission"
+    header_icon = "form"
     _show_breadcrumbs = True
 
     def get_page_title(self):
@@ -217,6 +218,7 @@ class EditFormSubmissionView(EditView):
     index_url_name = "form_submissions_report"
     delete_url_name = "delete_form_submission"
     edit_url_name = "edit_form_submission"
+    header_icon = "form"
     fields = ["status"]
 
 
@@ -225,3 +227,4 @@ class DeleteFormSubmissionView(DeleteView):
     index_url_name = "form_submissions_report"
     delete_url_name = "delete_form_submission"
     edit_url_name = "edit_form_submission"
+    header_icon = "form"
