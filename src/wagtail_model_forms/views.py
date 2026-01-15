@@ -1,11 +1,9 @@
 import json
 
 import django_filters
-from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
-from django.views.generic.base import TemplateView
 from wagtail import VERSION as WAGTAIL_VERSION
 from wagtail.admin.filters import DateRangePickerWidget, WagtailFilterSet
 from wagtail.admin.views.generic import DeleteView, EditView, InspectView

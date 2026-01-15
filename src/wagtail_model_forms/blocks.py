@@ -301,10 +301,6 @@ class AbstractFormBlock(blocks.StructBlock):
         context["form"] = form
         return context
 
-    class Meta:
-        abstract = True
-
-
 class FormBlock(AbstractFormBlock):
     class Meta:
         icon = "form"

@@ -29,7 +29,7 @@ from wagtail.fields import StreamField
 
 from wagtail_model_forms import get_submission_model, get_uploaded_file_model
 from wagtail_model_forms.blocks import FIELDBLOCKS, WebhookBlock
-from wagtail_model_forms.settings import FORM_MODEL, SUBMISSION_MODEL
+from wagtail_model_forms.settings import SUBMISSION_MODEL
 from wagtail_model_forms.utils import trigger_webhook
 
 logger = logging.getLogger(__name__)
@@ -254,7 +254,7 @@ class FormBuilder(BaseFormBuilder):
         """
         values = []
         for choice in field["choices"]:
-            if choice["default_value"] == True:
+            if choice["default_value"]:
                 values.append(choice["value"])
         return values
 
@@ -444,7 +444,7 @@ class AbstractForm(ClusterableModel):
         try:
             for field_name in request.FILES:
                 file = request.FILES[field_name]
-                uploaded_file = self.get_uploaded_file_class().objects.create(
+                uploaded_file = self.get_uploaded_file_class().objects.create( #noqa
                     form_submission=form_submission,
                     file=file,
                 )
