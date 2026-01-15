@@ -4,8 +4,6 @@ recursive-exclude * *
 include MANIFEST.in
 include setup.py
 
-include README.md
-
 graft src/wagtail_model_forms
 
 global-exclude .DS_Store
