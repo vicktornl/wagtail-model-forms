@@ -8,7 +8,11 @@ from wagtail import VERSION as WAGTAIL_VERSION
 from wagtail.admin.filters import DateRangePickerWidget, WagtailFilterSet
 from wagtail.admin.views.generic import DeleteView, EditView, InspectView
 from wagtail.admin.views.reports import ReportView
-
+from wagtail.coreutils import multigetattr
+from django.utils import timezone
+import datetime
+from openpyxl import Workbook
+from collections import defaultdict
 from wagtail_model_forms import get_submission_model
 
 FormSubmission = get_submission_model()
@@ -64,13 +68,9 @@ class FormSubmissionReportView(ReportView):
         if heading:
             return str(heading)
         return field.replace("-", " ").replace("_", " ").title()
-    
+
     def _get_field_value(self, submission, field):
         """Get a field value from a submission, handling form_data"""
-        from wagtail.coreutils import multigetattr
-        from django.utils import timezone
-        import datetime
-        
         if field in ["form.title", "page.title", "submit_time"]:
             value = multigetattr(submission, field)
             # Convert timezone-aware datetime to naive
@@ -107,45 +107,43 @@ class FormSubmissionReportView(ReportView):
             .select_related("page")
             .order_by("-submit_time")
         )
-    
+
     def write_xlsx(self, queryset, output):
         """Write an xlsx workbook with separate sheets for each form"""
-        from openpyxl import Workbook
-        from collections import defaultdict
-        
         workbook = Workbook(write_only=True, iso_dates=True)
-        
+
         # Group submissions by form
         submissions_by_form = defaultdict(list)
         for submission in queryset:
             form_title = submission.form.title
             submissions_by_form[form_title].append(submission)
-        
+
         # Create a worksheet for each form
         for form_title in sorted(submissions_by_form.keys()):
             submissions = submissions_by_form[form_title]
-            
+
             # Get form_data keys for this specific form
             form_data_keys = self._get_form_data_keys_for_submissions(submissions)
-            
+
             # Build sheet-specific columns
             sheet_columns = ["form.title", "page.title", "submit_time"] + form_data_keys
-            
+
             # Create worksheet with form title (truncate if too long)
             sheet_title = form_title[:31]  # Excel limit is 31 chars
             worksheet = workbook.create_sheet(title=sheet_title)
-            
+
             # Add headers
             headers = [self._get_formatted_heading(field) for field in sheet_columns]
             worksheet.append(headers)
-            
+
             # Add rows
             for submission in submissions:
-                row_values = [self._get_field_value(submission, field) for field in sheet_columns]
+                row_values = [
+                    self._get_field_value(submission, field) for field in sheet_columns
+                ]
                 worksheet.append(row_values)
-        
+
         workbook.save(output)
-    
 
 
 class FormSubmissionDetailView(InspectView):
