@@ -5,7 +5,7 @@ from setuptools import find_packages, setup
 this_directory = Path(__file__).parent
 long_description = (this_directory / "README.md").read_text()
 
-install_requires = ["wagtail>=2"]
+install_requires = ["wagtail>=5"]
 
 tests_requires = [
     "black",
@@ -37,6 +37,7 @@ setup(
         "Operating System :: Unix",
         "Framework :: Wagtail :: 5",
         "Framework :: Wagtail :: 6",
+        "Framework :: Wagtail :: 7",
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
