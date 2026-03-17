@@ -5,9 +5,12 @@ clean:
 	find . -name '__pycache__' -exec rm -rf {} +
 	find . -name '*.egg-info' -exec rm -rf {} +
 
+lint:
+	ruff check
+
 format:
-	black .
-	isort .
+	ruff check --fix
+	ruff format
 
 install:
 	pip install -e .[test]

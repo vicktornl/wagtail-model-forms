@@ -1,0 +1,19 @@
+[lint]
+ignore = ["BLE001", "C408", "E501", "F405", "T201", "UP031"]
+select = [
+    "E", # pycodestyle errors
+    "F", # pyflakes
+    "I", # isort
+    "T20", # flake8-print
+    "BLE", # flake8-blind-except
+    "C4", # flake8-comprehensions
+    "UP", # pyupgrade
+]
+exclude = [
+    "**/migrations/*"
+]
+
+[format]
+exclude = [
+    "**/migrations/*"
+]
