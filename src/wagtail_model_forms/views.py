@@ -35,12 +35,14 @@ class FormSubmissionReportView(ReportView):
         "page.title": _("Page"),
         "submit_time": _("Date / Time"),
         "form_data": _("Data"),
+        "uploaded_file_download_urls": _("Files"),
     }
     list_export = [
         "form.title",
         "page.title",
         "submit_time",
         "form_data",
+        "uploaded_file_download_urls",
     ]
     filterset_class = FormSubmissionReportFilterSet
 
@@ -72,6 +74,7 @@ class FormSubmissionDetailView(InspectView):
     index_url_name = "form_submissions_report"
     delete_url_name = "delete_form_submission"
     edit_url_name = "edit_form_submission"
+
     _show_breadcrumbs = True
 
     def get_page_title(self):

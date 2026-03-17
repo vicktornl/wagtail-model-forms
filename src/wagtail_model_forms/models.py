@@ -73,6 +73,14 @@ class AbstractFormSubmission(WagtailAbstractFormSubmission):
     def __str__(self):
         return str(self.form)
 
+    @property
+    def uploaded_file_download_urls(self):
+        urls = [
+            settings.WAGTAILADMIN_BASE_URL + x.download_url
+            for x in self.uploaded_files.all()
+        ]
+        return ", ".join(urls)
+
 
 class AbstractUploadedFile(models.Model):
     form_submission = models.ForeignKey(
