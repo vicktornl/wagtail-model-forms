@@ -29,7 +29,7 @@ from wagtail.fields import StreamField
 
 from wagtail_model_forms import get_submission_model, get_uploaded_file_model
 from wagtail_model_forms.blocks import FIELDBLOCKS, WebhookBlock
-from wagtail_model_forms.settings import FORM_MODEL, SUBMISSION_MODEL
+from wagtail_model_forms.settings import SUBMISSION_MODEL
 from wagtail_model_forms.utils import trigger_webhook
 
 logger = logging.getLogger(__name__)
@@ -107,44 +107,37 @@ class FormBuilder(BaseFormBuilder):
         # TODO: This is a default value - it may need to be changed
         options["max_length"] = 255
         return forms.CharField(
-            widget=forms.TextInput(attrs=default_widget_attrs),
-            **options
+            widget=forms.TextInput(attrs=default_widget_attrs), **options
         )
 
     def create_multiline_field(self, field, options, default_widget_attrs={}):
         return forms.CharField(
-            widget=forms.Textarea(attrs=default_widget_attrs),
-            **options
+            widget=forms.Textarea(attrs=default_widget_attrs), **options
         )
 
     def create_date_field(self, field, options, default_widget_attrs={}):
         return forms.DateField(
-            widget=forms.DateInput(attrs=default_widget_attrs),
-            **options
+            widget=forms.DateInput(attrs=default_widget_attrs), **options
         )
 
     def create_datetime_field(self, field, options, default_widget_attrs={}):
         return forms.DateTimeField(
-            widget=forms.DateTimeInput(attrs=default_widget_attrs),
-            **options
+            widget=forms.DateTimeInput(attrs=default_widget_attrs), **options
         )
 
     def create_email_field(self, field, options, default_widget_attrs={}):
         return forms.EmailField(
-            widget=forms.EmailInput(attrs=default_widget_attrs),
-            **options
+            widget=forms.EmailInput(attrs=default_widget_attrs), **options
         )
 
     def create_url_field(self, field, options, default_widget_attrs={}):
         return forms.URLField(
-            widget=forms.URLInput(attrs=default_widget_attrs),
-            **options
+            widget=forms.URLInput(attrs=default_widget_attrs), **options
         )
 
     def create_number_field(self, field, options, default_widget_attrs={}):
         return forms.DecimalField(
-            widget=forms.NumberInput(attrs=default_widget_attrs),
-            **options
+            widget=forms.NumberInput(attrs=default_widget_attrs), **options
         )
 
     def create_dropdown_field(self, field, options, default_widget_attrs={}):
@@ -254,7 +247,7 @@ class FormBuilder(BaseFormBuilder):
         """
         values = []
         for choice in field["choices"]:
-            if choice["default_value"] == True:
+            if choice["default_value"]:
                 values.append(choice["value"])
         return values
 
@@ -444,7 +437,7 @@ class AbstractForm(ClusterableModel):
         try:
             for field_name in request.FILES:
                 file = request.FILES[field_name]
-                uploaded_file = self.get_uploaded_file_class().objects.create(
+                uploaded_file = self.get_uploaded_file_class().objects.create(  # noqa
                     form_submission=form_submission,
                     file=file,
                 )
