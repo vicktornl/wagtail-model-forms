@@ -435,13 +435,17 @@ class AbstractForm(ClusterableModel):
             cleaned_form_data[key] = value
         return cleaned_form_data
 
+    def get_form_submission(self, form_data, page=None):
+        form_submission = self.get_submission_class().objects.create(
+            form_data=form_data, form=self, page=page
+        )
+        return form_submission
+
     def process_form_submission(self, form, page=None, request=None):
         form_data = json.dumps(
             self.get_form_data(form, request=request), cls=DjangoJSONEncoder
         )
-        form_submission = self.get_submission_class().objects.create(
-            form_data=form_data, form=self, page=page
-        )
+        form_submission = self.get_form_submission(form_data, page=page)
         try:
             for field_name in request.FILES:
                 file = request.FILES[field_name]
