@@ -5,7 +5,7 @@ from setuptools import find_packages, setup
 this_directory = Path(__file__).parent
 long_description = (this_directory / "README.md").read_text()
 
-install_requires = ["wagtail>=5"]
+install_requires = ["wagtail>=6"]
 
 tests_requires = [
     "black",
@@ -19,7 +19,7 @@ tests_requires = [
 
 setup(
     name="wagtail-model-forms",
-    version="0.9.1",
+    version="0.10.0",
     description="The Wagtail Form Builder functionalities available for your models/snippets.",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -35,7 +35,6 @@ setup(
         "Environment :: Web Environment",
         "Framework :: Django",
         "Operating System :: Unix",
-        "Framework :: Wagtail :: 5",
         "Framework :: Wagtail :: 6",
         "Framework :: Wagtail :: 7",
         "Programming Language :: Python :: 3",

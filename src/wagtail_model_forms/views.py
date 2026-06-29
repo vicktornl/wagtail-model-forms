@@ -4,13 +4,13 @@ import django_filters
 from django.urls import reverse_lazy
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
-from wagtail import VERSION as WAGTAIL_VERSION
 from wagtail.admin.filters import DateRangePickerWidget, WagtailFilterSet
 from wagtail.admin.views.generic import DeleteView, EditView, InspectView
 from wagtail.admin.views.reports import ReportView
 
-from wagtail_model_forms import get_submission_model
+from wagtail_model_forms import get_form_model, get_submission_model
 
+Form = get_form_model()
 FormSubmission = get_submission_model()
 
 
@@ -18,10 +18,15 @@ class FormSubmissionReportFilterSet(WagtailFilterSet):
     submit_time = django_filters.DateFromToRangeFilter(
         label=_("Date / Time"), widget=DateRangePickerWidget
     )
+    form_instance = django_filters.ModelChoiceFilter(
+        field_name="form",
+        label=_("Form"),
+        queryset=Form.objects.all(),
+    )
 
     class Meta:
         model = FormSubmission
-        fields = ["submit_time", "form", "status"]
+        fields = ["submit_time", "form_instance", "status"]
 
 
 class FormSubmissionReportView(ReportView):
@@ -45,12 +50,6 @@ class FormSubmissionReportView(ReportView):
         "uploaded_file_download_urls",
     ]
     filterset_class = FormSubmissionReportFilterSet
-
-    # COMPAT: remove fallback template when Wagtail 6.2 is the minimum version
-    def get_template_names(self):
-        if WAGTAIL_VERSION < (6, 2):
-            return ["wagtail_model_forms/compat/form_submissions_report.html"]
-        return super().get_template_names()
 
     @property
     # COMPAT: move to direct attribute assignment when Wagtail 6.2 is the minimum version
