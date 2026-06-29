@@ -19,5 +19,5 @@ test:
 	py.test
 
 wheel:
-	pip install wheel
+	pip install setuptools wheel
 	python setup.py sdist bdist_wheel
