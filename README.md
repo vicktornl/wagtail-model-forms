@@ -48,7 +48,11 @@ from modelcluster.fields import ParentalKey
 from wagtail.core.models import Page
 from wagtail.snippets.models import register_snippet
 from wagtail_model_forms.mixins import FormSnippetMixin
-from wagtail_model_forms.models import AbstractForm, AbstractUploadedFile, AbstractFormSubmission
+from wagtail_model_forms.models import (
+    AbstractForm,
+    AbstractUploadedFile,
+    AbstractFormSubmission,
+)
 
 
 class FormSubmission(AbstractFormSubmission):
@@ -84,13 +88,15 @@ from wagtail_model_forms.blocks import FormBlock
 
 
 class MyPage(FormSnippetMixin, Page):
-    block_type = "form" # has by default already the value form
-    streamfields = ["content"] # the name of your streamfields
-    
-    content = StreamField([
-      # your other blocks
-      ("form", FormBlock()),
-    ])
+    block_type = "form"  # has by default already the value form
+    streamfields = ["content"]  # the name of your streamfields
+
+    content = StreamField(
+        [
+            # your other blocks
+            ("form", FormBlock()),
+        ]
+    )
 ```
 
 More advanced with your bespoke implementation
