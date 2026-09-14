@@ -25,6 +25,12 @@ def trigger_webhook(webhook, form_submission):
             ).render(context)
 
     if request_body and request_body != "":
+        data = form_data.copy()
+        for key, value in form_data.items():
+            if "-" in key:
+                data.pop(key)
+                data[key.replace("-", "_")] = value
+        context = Context(data)
         data = json.loads(Template(request_body).render(context))
     else:
         data = None
