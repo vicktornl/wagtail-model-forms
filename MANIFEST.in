@@ -1,6 +1,7 @@
 exclude *
 recursive-exclude * *
 
+include README.md
 include MANIFEST.in
 include setup.py
 
